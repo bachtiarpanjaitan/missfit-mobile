@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Miss Fit",
+    "slug": "miss-fit",
+    "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.missfit.app"
+    },
+    "android": {
+      "package": "com.missfit.app"
+    },
+    "web": {
+    },
+    "plugins": [
+      "expo-image-picker"
+    ]
+  }
+}
