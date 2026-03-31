@@ -21,8 +21,8 @@ type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 export default function LoginScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.auth);
-  const [email, setEmail] = useState('user@example.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('bachtiarpanjaitan0@gmail.com');
+  const [password, setPassword] = useState('User1234');
 
   const handleLogin = async () => {
     if (!email || !password) {
