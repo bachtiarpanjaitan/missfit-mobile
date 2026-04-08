@@ -23,6 +23,21 @@ import { Ionicons } from '@expo/vector-icons';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Dashboard'>;
 
+const formatToRupiah = (amount: number) => {
+  // Ensure input is a valid number
+  if (isNaN(amount)) {
+    console.error("Invalid input: The input should be a valid number.");
+    return ""; // Or throw an error as appropriate
+  }
+
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0, // IDR typically has no decimal places
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
+
 export default function DashboardScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
@@ -64,7 +79,7 @@ export default function DashboardScreen({ navigation }: Props) {
           {!item.isFree && (
             <View style={styles.priceBadge}>
               <Text style={styles.priceText}>
-                ${item.price.toFixed(2)}
+                {formatToRupiah(item.price)}
               </Text>
             </View>
           )}
