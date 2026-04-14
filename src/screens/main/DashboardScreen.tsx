@@ -20,23 +20,9 @@ import {
 import { fetchGlobalRankings, RankingUser } from '../../redux/slices/rankingSlice';
 import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
+import { formatToRupiah } from '../../../lib/utils';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Dashboard'>;
-
-const formatToRupiah = (amount: number) => {
-  // Ensure input is a valid number
-  if (isNaN(amount)) {
-    console.error("Invalid input: The input should be a valid number.");
-    return ""; // Or throw an error as appropriate
-  }
-
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0, // IDR typically has no decimal places
-    maximumFractionDigits: 0,
-  }).format(amount);
-};
 
 export default function DashboardScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -77,7 +63,7 @@ export default function DashboardScreen({ navigation }: Props) {
           {!item.IsFree && (
             <View style={styles.priceBadge}>
               <Text style={styles.priceText}>
-                {formatToRupiah(item.Price)}
+                {formatToRupiah(item.Price, item.Currency)}
               </Text>
             </View>
           )}
@@ -88,11 +74,15 @@ export default function DashboardScreen({ navigation }: Props) {
         <View style={styles.packageMeta}>
           <View style={styles.metaItem}>
             <Ionicons name="help-circle" size={14} color="#6b7280" />
-            <Text style={styles.metaText}>{item.QuestionCount}</Text>
+            <Text style={styles.metaText}>{item.TotalQuestions}</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="time" size={14} color="#6b7280" />
-            <Text style={styles.metaText}>{item.Duration}m</Text>
+            <Text style={styles.metaText}>{item.DurationMinutes}m</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Ionicons name="albums-outline" size={14} color="#6b7280" />
+            <Text style={styles.metaText}>{item.Category}</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="star" size={14} color="#fbbf24" />

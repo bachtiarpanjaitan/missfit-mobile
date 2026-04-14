@@ -21,17 +21,18 @@ export interface QuizPackage {
   Title: string;
   Description: string;
   Category: string;
-  Difficulty: 'easy' | 'medium' | 'hard';
+  DifficultyLevel: string;
   Price: number;
   IsFree: boolean;
-  QuestionCount: number;
-  Duration: number;
+  TotalQuestions: number;
+  DurationMinutes: number;
   Rating: number;
-  maxAttempts: number;
+  MaxAttempts: number;
   TotalAttempts?: number;
   IsPurchased?: boolean;
   ThumbnailUrl?: string;
   createdAt: string;
+  Currency: string;
 }
 
 export interface QuizResult {
@@ -48,6 +49,7 @@ export interface QuizState {
   paidPackages: QuizPackage[];
   freePackages: QuizPackage[];
   latestPackages: QuizPackage[];
+  allPackages: QuizPackage[];
   myPackages: QuizPackage[];
   currentQuiz: {
     package: QuizPackage | null;
@@ -65,6 +67,7 @@ const initialState: QuizState = {
   paidPackages: [],
   freePackages: [],
   myPackages: [],
+  allPackages: [],
   currentQuiz: {
     package: null,
     questions: [],
@@ -86,6 +89,15 @@ export const fetchQuizPackages = createAsyncThunk(
     return response.data.data;
   }
 );
+
+export const fetchAllQuizPackages = createAsyncThunk(
+  'quiz/fetchAllPackages',
+  async () => {
+    const response = await api.get('/quizzes/all');
+    return response.data.data;
+  }
+);
+
 
 export const fetchMyQuizPackages = createAsyncThunk(
   'quiz/fetchMyPackages',
@@ -192,6 +204,10 @@ const quizSlice = createSlice({
         state.paidPackages = action.payload.paid_packages;
         state.freePackages = action.payload.free_packages;
         state.latestPackages = action.payload.latest_packages;
+      })
+      .addCase(fetchAllQuizPackages.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allPackages = action.payload.packages;
       })
       .addCase(fetchQuizPackages.rejected, (state, action) => {
         state.loading = false;

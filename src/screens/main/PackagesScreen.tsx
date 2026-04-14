@@ -9,41 +9,41 @@ import {
   ActivityIndicator,
   FlatList,
   SafeAreaView,
-  TextInput,
-  SegmentedControlIOSBase,
+  TextInput
 } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { fetchQuizPackages, QuizPackage } from '../../redux/slices/quizSlice';
+import { fetchAllQuizPackages, QuizPackage } from '../../redux/slices/quizSlice';
 import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
+import { formatToRupiah } from '../../../lib/utils';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Packages'>;
 
 export default function PackagesScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
-  const { packages, loading } = useAppSelector((state) => state.quiz);
+  const { allPackages, loading } = useAppSelector((state) => state.quiz);
   const [filter, setFilter] = useState<'all' | 'free' | 'paid'>('all');
   const [searchText, setSearchText] = useState('');
-
+  const packages = allPackages;
   useEffect(() => {
-    dispatch(fetchQuizPackages());
+    dispatch(fetchAllQuizPackages());
   }, []);
 
   const getFilteredPackages = () => {
     let filtered = packages;
 
     if (filter === 'free') {
-      filtered = filtered.filter((pkg) => pkg.isFree);
+      filtered = filtered.filter((pkg) => pkg.IsFree);
     } else if (filter === 'paid') {
-      filtered = filtered.filter((pkg) => !pkg.isFree);
+      filtered = filtered.filter((pkg) => !pkg.IsFree);
     }
 
     if (searchText) {
       filtered = filtered.filter(
         (pkg) =>
-          pkg.title.toLowerCase().includes(searchText.toLowerCase()) ||
-          pkg.category.toLowerCase().includes(searchText.toLowerCase())
+          pkg.Title.toLowerCase().includes(searchText.toLowerCase()) ||
+          pkg.Category.toLowerCase().includes(searchText.toLowerCase())
       );
     }
 
@@ -54,16 +54,16 @@ export default function PackagesScreen({ navigation }: Props) {
 
   const renderPackageCard = (item: QuizPackage) => (
     <TouchableOpacity
-      key={item.id}
+      key={item.Id}
       style={styles.packageCard}
       onPress={() => {
         // Navigate to quiz detail or start quiz
         navigation.navigate('MyQuizzes' as never);
       }}
     >
-      {item.image && (
+      {item.ThumbnailUrl && (
         <Image
-          source={{ uri: item.image }}
+          source={{ uri: item.ThumbnailUrl }}
           style={styles.packageImage}
         />
       )}
@@ -71,47 +71,47 @@ export default function PackagesScreen({ navigation }: Props) {
         <View style={styles.packageHeader}>
           <View style={styles.titleContainer}>
             <Text style={styles.packageTitle} numberOfLines={2}>
-              {item.title}
+              {item.Title}
             </Text>
             <View style={styles.difficultyBadge}>
               <Text
                 style={[
                   styles.difficultyText,
-                  item.difficulty === 'easy' && styles.difficultyEasy,
-                  item.difficulty === 'medium' && styles.difficultyMedium,
-                  item.difficulty === 'hard' && styles.difficultyHard,
+                  item.DifficultyLevel === 'easy' && styles.difficultyEasy,
+                  item.DifficultyLevel === 'medium' && styles.difficultyMedium,
+                  item.DifficultyLevel === 'hard' && styles.difficultyHard,
                 ]}
               >
-                {item.difficulty.charAt(0).toUpperCase() +
-                  item.difficulty.slice(1)}
+                {item.DifficultyLevel.charAt(0).toUpperCase() +
+                  item.DifficultyLevel.slice(1)}
               </Text>
             </View>
           </View>
-          {!item.isFree && (
+          {!item.IsFree && (
             <View style={styles.priceBadge}>
               <Text style={styles.priceText}>
-                ${item.price.toFixed(2)}
+                {formatToRupiah(item.Price, item.Currency)}
               </Text>
             </View>
           )}
         </View>
         <Text style={styles.packageDescription} numberOfLines={2}>
-          {item.description}
+          {item.Description}
         </Text>
         <View style={styles.packageMeta}>
           <View style={styles.metaItem}>
             <Ionicons name="help-circle-outline" size={14} color="#6b7280" />
-            <Text style={styles.metaText}>{item.questionCount} Q</Text>
+            <Text style={styles.metaText}>{item.TotalQuestions} Q</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="time-outline" size={14} color="#6b7280" />
-            <Text style={styles.metaText}>{item.duration}m</Text>
+            <Text style={styles.metaText}>{item.DurationMinutes}m</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="star" size={14} color="#fbbf24" />
-            <Text style={styles.metaText}>{item.rating.toFixed(1)}</Text>
+            <Text style={styles.metaText}>{item.Rating.toFixed(1)}</Text>
           </View>
-          {item.isPurchased && (
+          {item.IsPurchased && (
             <View style={styles.purchasedBadge}>
               <Text style={styles.purchasedText}>Purchased</Text>
             </View>
@@ -120,20 +120,20 @@ export default function PackagesScreen({ navigation }: Props) {
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() => {
-            if (item.isPurchased) {
+            if (item.IsPurchased) {
               // Start quiz
               navigation.navigate('MyQuizzes' as never);
             } else {
               // Navigate to payment
               navigation.navigate('Packages' as never, {
                 screen: 'PaymentScreen',
-                params: { packageId: item.id },
+                params: { packageId: item.Id },
               } as never);
             }
           }}
         >
           <Text style={styles.actionButtonText}>
-            {item.isPurchased ? 'Start Quiz' : 'Buy Now'}
+            {item.IsPurchased ? 'Start Quiz' : 'Buy Now'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -187,7 +187,7 @@ export default function PackagesScreen({ navigation }: Props) {
         <FlatList
           data={filteredPackages}
           renderItem={({ item }) => renderPackageCard(item)}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.Id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
         />
