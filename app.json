@@ -3,7 +3,9 @@
     "name": "Miss Fit",
     "slug": "miss-fit",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.missfit.app"
@@ -11,13 +13,12 @@
     "android": {
       "package": "com.missfit.app"
     },
-    "web": {
-    },
+    "web": {},
     "plugins": [
       "expo-image-picker"
     ],
     "extra": {
-      "API_BASE_URL": "http://192.168.1.5:8000/api",
+      "API_BASE_URL": "http://192.168.1.6:8000/api",
       "API_TIMEOUT": "30000"
     }
   }
