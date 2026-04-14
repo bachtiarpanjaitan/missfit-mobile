@@ -1,17 +1,14 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const API_BASE_URL = process.env.API_BASE_URL || 'http://192.168.1.4:3000/api';
-const API_TIMEOUT = parseInt(process.env.API_TIMEOUT || '30000', 10);
+import Constants from 'expo-constants';
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: API_TIMEOUT,
+  baseURL: Constants.expoConfig?.extra?.API_BASE_URL,
+  timeout: parseInt(Constants.expoConfig?.extra?.API_TIMEOUT || '30000', 10),
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
 // Request interceptor to add auth token
 api.interceptors.request.use(
   async (config) => {
@@ -43,7 +40,7 @@ api.interceptors.response.use(
 
       try {
         // Try to refresh token (implement token refresh logic in your backend)
-        const response = await axios.post(`${API_BASE_URL}/auth/refresh`);
+        const response = await axios.post(`${Constants.expoConfig?.extra?.API_BASE_URL}/auth/refresh`);
         const { token } = response.data.data;
 
         await AsyncStorage.setItem('authToken', token);
@@ -61,5 +58,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 export default api;

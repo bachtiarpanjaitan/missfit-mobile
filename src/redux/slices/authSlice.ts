@@ -34,8 +34,9 @@ export const initializeAuth = createAsyncThunk('auth/initialize', async () => {
     const token = await AsyncStorage.getItem('authToken');
     if (token) {
       const response = await api.get('/auth/me');
+      const { user } = response.data.data
       return {
-        user: response.data.data,
+        user,
         token,
       };
     }
@@ -48,7 +49,7 @@ export const initializeAuth = createAsyncThunk('auth/initialize', async () => {
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }) => {
-    const response = await api.post('/auth/login', credentials);
+    const response = await api.post('/auth/login', credentials)
     const { token, user } = response.data.data;
     await AsyncStorage.setItem('authToken', token);
     return { user, token };
@@ -69,7 +70,7 @@ export const loginWithGoogle = createAsyncThunk(
   'auth/loginWithGoogle',
   async (googleToken: string) => {
     const response = await api.post('/auth/google', { token: googleToken });
-    const { token, user } = response.data.data;
+    const { token, user } = response.data;
     await AsyncStorage.setItem('authToken', token);
     return { user, token };
   }

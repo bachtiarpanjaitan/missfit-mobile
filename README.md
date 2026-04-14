@@ -133,19 +133,12 @@ miss-fit/
    cp .env.example .env
    ```
 
-4. **Start the mock API server (in a separate terminal):**
-   ```bash
-   npm run mock-api
-   ```
-
-   The mock API will run on `http://localhost:3001/api`
-
-5. **Start the React Native development server:**
+4. **Start the React Native development server:**
    ```bash
    npm start
    ```
 
-6. **Run on specific platform:**
+5. **Run on specific platform:**
    ```bash
    # For Android
    npm run android

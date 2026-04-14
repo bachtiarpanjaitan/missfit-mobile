@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 export default function LoginScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.auth);
-  const [email, setEmail] = useState('bachtiarpanjaitan0@gmail.com');
+  const [email, setEmail] = useState('user1@gmail.com');
   const [password, setPassword] = useState('User1234');
 
   const handleLogin = async () => {
@@ -30,14 +30,14 @@ export default function LoginScreen({ navigation }: Props) {
       return;
     }
 
-    const result = await dispatch(
-      loginUser({ email, password })
-    );
-    console.log(result)
+    const result = await dispatch(loginUser({ email, password }));
+
     if (loginUser.fulfilled.match(result)) {
-      // Navigation will be handled by RootNavigator
+      // sukses
     } else {
-      Alert.alert('Login Failed', error || 'Please try again');
+      const message = result.error?.message || 'Login failed';
+      console.log(message)
+      Alert.alert('Login Failed', message);
     }
   };
 
