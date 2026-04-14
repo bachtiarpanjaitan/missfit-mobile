@@ -41,7 +41,7 @@ const formatToRupiah = (amount: number) => {
 export default function DashboardScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const { packages, loading } = useAppSelector((state) => state.quiz);
+  const { latestPackages, paidPackages, freePackages, loading } = useAppSelector((state) => state.quiz);
   const { globalRankings } = useAppSelector((state) => state.ranking);
 
   useEffect(() => {
@@ -50,55 +50,53 @@ export default function DashboardScreen({ navigation }: Props) {
     dispatch(fetchQuizResults());
   }, []);
 
-  const latestPackages = packages.slice(0, 5);
-  const freePackages = packages.filter((pkg) => pkg.isFree).slice(0, 5);
-  const topRankings = globalRankings.slice(0, 10);
+  const topRankings = globalRankings;
 
   const renderPackageCard = (item: QuizPackage) => (
     <TouchableOpacity
-      key={item.id}
+      key={item.Id}
       style={styles.packageCard}
       onPress={() =>
         navigation.navigate('Packages' as never, {
           screen: 'PackageDetail',
-          params: { packageId: item.id },
+          params: { packageId: item.Id },
         } as never)
       }
     >
-      {item.image && (
+      {item.ThumbnailUrl && (
         <Image
-          source={{ uri: item.image }}
+          source={{ uri: item.ThumbnailUrl }}
           style={styles.packageImage}
         />
       )}
       <View style={styles.packageContent}>
         <View style={styles.packageHeader}>
           <Text style={styles.packageTitle} numberOfLines={2}>
-            {item.title}
+            {item.Title}
           </Text>
-          {!item.isFree && (
+          {!item.IsFree && (
             <View style={styles.priceBadge}>
               <Text style={styles.priceText}>
-                {formatToRupiah(item.price)}
+                {formatToRupiah(item.Price)}
               </Text>
             </View>
           )}
         </View>
         <Text style={styles.packageDescription} numberOfLines={2}>
-          {item.description}
+          {item.Description}
         </Text>
         <View style={styles.packageMeta}>
           <View style={styles.metaItem}>
             <Ionicons name="help-circle" size={14} color="#6b7280" />
-            <Text style={styles.metaText}>{item.questionCount}</Text>
+            <Text style={styles.metaText}>{item.QuestionCount}</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="time" size={14} color="#6b7280" />
-            <Text style={styles.metaText}>{item.duration}m</Text>
+            <Text style={styles.metaText}>{item.Duration}m</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="star" size={14} color="#fbbf24" />
-            <Text style={styles.metaText}>{item.rating.toFixed(1)}</Text>
+            <Text style={styles.metaText}>{item.Rating.toFixed(1)}</Text>
           </View>
         </View>
       </View>
@@ -176,9 +174,8 @@ export default function DashboardScreen({ navigation }: Props) {
           <FlatList
             data={latestPackages}
             renderItem={({ item }) => renderPackageCard(item)}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.Id}
             scrollEnabled={false}
-            gap={12}
           />
         </View>
 
@@ -197,9 +194,8 @@ export default function DashboardScreen({ navigation }: Props) {
           <FlatList
             data={freePackages}
             renderItem={({ item }) => renderPackageCard(item)}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.Id}
             scrollEnabled={false}
-            gap={12}
           />
         </View>
 

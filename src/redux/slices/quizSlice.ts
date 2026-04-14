@@ -17,20 +17,20 @@ export interface Question {
 }
 
 export interface QuizPackage {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  price: number;
-  isFree: boolean;
-  questionCount: number;
-  duration: number;
-  rating: number;
+  Id: string;
+  Title: string;
+  Description: string;
+  Category: string;
+  Difficulty: 'easy' | 'medium' | 'hard';
+  Price: number;
+  IsFree: boolean;
+  QuestionCount: number;
+  Duration: number;
+  Rating: number;
   maxAttempts: number;
-  totalAttempts?: number;
-  isPurchased?: boolean;
-  image?: string;
+  TotalAttempts?: number;
+  IsPurchased?: boolean;
+  ThumbnailUrl?: string;
   createdAt: string;
 }
 
@@ -45,7 +45,9 @@ export interface QuizResult {
 }
 
 export interface QuizState {
-  packages: QuizPackage[];
+  paidPackages: QuizPackage[];
+  freePackages: QuizPackage[];
+  latestPackages: QuizPackage[];
   myPackages: QuizPackage[];
   currentQuiz: {
     package: QuizPackage | null;
@@ -55,14 +57,13 @@ export interface QuizState {
     startTime: number | null;
   };
   results: QuizResult[];
-  latestPackages: QuizPackage[];
-  freePackages: QuizPackage[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: QuizState = {
-  packages: [],
+  paidPackages: [],
+  freePackages: [],
   myPackages: [],
   currentQuiz: {
     package: null,
@@ -73,7 +74,6 @@ const initialState: QuizState = {
   },
   results: [],
   latestPackages: [],
-  freePackages: [],
   loading: false,
   error: null,
 };
@@ -189,7 +189,9 @@ const quizSlice = createSlice({
       })
       .addCase(fetchQuizPackages.fulfilled, (state, action) => {
         state.loading = false;
-        state.packages = action.payload;
+        state.paidPackages = action.payload.paid_packages;
+        state.freePackages = action.payload.free_packages;
+        state.latestPackages = action.payload.latest_packages;
       })
       .addCase(fetchQuizPackages.rejected, (state, action) => {
         state.loading = false;
