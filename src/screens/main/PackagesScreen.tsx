@@ -12,13 +12,18 @@ import {
   TextInput
 } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchAllQuizPackages, QuizPackage } from '../../redux/slices/quizSlice';
-import { MainTabParamList } from '../../navigation/types';
+import { MainTabParamList, RootStackParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import { formatToRupiah } from '../../../lib/utils';
 
-type Props = BottomTabScreenProps<MainTabParamList, 'Packages'>;
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<MainTabParamList, 'Packages'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 export default function PackagesScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -58,7 +63,7 @@ export default function PackagesScreen({ navigation }: Props) {
       style={styles.packageCard}
       onPress={() => {
         // Navigate to quiz detail or start quiz
-        navigation.navigate('MyQuizzes' as never);
+        navigation.navigate('MyQuizzes');
       }}
     >
       {item.ThumbnailUrl && (
@@ -122,13 +127,13 @@ export default function PackagesScreen({ navigation }: Props) {
           onPress={() => {
             if (item.IsPurchased) {
               // Start quiz
-              navigation.navigate('MyQuizzes' as never);
+              navigation.navigate('MyQuizzes');
             } else {
               // Navigate to payment
-              navigation.navigate('Packages' as never, {
-                screen: 'PaymentScreen',
-                params: { packageId: item.Id },
-              } as never);
+              navigation.navigate('PaymentFlow', {
+                packageId: item.Id,
+                amount: item.Price,
+              });
             }
           }}
         >

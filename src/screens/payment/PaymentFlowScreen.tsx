@@ -19,6 +19,7 @@ import {
 } from '../../redux/slices/paymentSlice';
 import { RootStackParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
+import { formatToRupiah } from '../../../lib/utils';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PaymentFlow'>;
 
@@ -39,9 +40,9 @@ export default function PaymentFlowScreen({ route, navigation }: Props) {
     (state) => state.payment
   );
   const pkg = useAppSelector((state) =>
-    state.quiz.packages.find((p) => p.id === packageId)
+    state.quiz.allPackages.find((p) => p.Id === packageId)
   );
-  
+
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [step, setStep] = useState<'method' | 'processing' | 'success'>('method');
 
@@ -123,7 +124,7 @@ export default function PaymentFlowScreen({ route, navigation }: Props) {
           </View>
           <Text style={styles.successTitle}>Payment Successful!</Text>
           <Text style={styles.successText}>
-            You can now access {pkg?.title}
+            You can now access {pkg?.Title}
           </Text>
           <Text style={styles.successSubtext}>
             Redirecting to your quizzes...
@@ -153,26 +154,26 @@ export default function PaymentFlowScreen({ route, navigation }: Props) {
             <Text style={styles.summaryTitle}>Order Summary</Text>
           </View>
 
-          {pkg?.image && (
+          {pkg?.ThumbnailUrl && (
             <Image
-              source={{ uri: pkg.image }}
+              source={{ uri: pkg.ThumbnailUrl }}
               style={styles.packageImage}
             />
           )}
 
           <View style={styles.summaryDetails}>
             <View style={styles.summaryRow}>
-              <Text style={styles.detailLabel}>{pkg?.title}</Text>
+              <Text style={styles.detailLabel}>{pkg?.Title}</Text>
             </View>
 
             <View style={styles.summaryRow}>
               <Text style={styles.detailLabel}>Questions:</Text>
-              <Text style={styles.detailValue}>{pkg?.questionCount}</Text>
+              <Text style={styles.detailValue}>{pkg?.TotalQuestions}</Text>
             </View>
 
             <View style={styles.summaryRow}>
               <Text style={styles.detailLabel}>Duration:</Text>
-              <Text style={styles.detailValue}>{pkg?.duration} minutes</Text>
+              <Text style={styles.detailValue}>{pkg?.DurationMinutes} minutes</Text>
             </View>
 
             <View style={styles.divider} />
@@ -180,7 +181,7 @@ export default function PaymentFlowScreen({ route, navigation }: Props) {
             <View style={styles.summaryRow}>
               <Text style={styles.totalLabel}>Total Amount:</Text>
               <Text style={styles.totalValue}>
-                ${amount.toFixed(2)}
+                {formatToRupiah(amount, pkg?.Currency)}
               </Text>
             </View>
           </View>
@@ -216,7 +217,7 @@ export default function PaymentFlowScreen({ route, navigation }: Props) {
                 style={[
                   styles.methodRadio,
                   selectedMethod === method.id &&
-                    styles.methodRadioSelected,
+                  styles.methodRadioSelected,
                 ]}
               >
                 {selectedMethod === method.id && (
@@ -263,7 +264,7 @@ export default function PaymentFlowScreen({ route, navigation }: Props) {
             <>
               <Ionicons name="card" size={20} color="#ffffff" />
               <Text style={styles.paymentButtonText}>
-                Pay ${amount.toFixed(2)}
+                Pay for {formatToRupiah(amount, pkg?.Currency)}
               </Text>
             </>
           )}
