@@ -432,6 +432,12 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 20,
         gap: 16,
+        borderRadius: 12,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
     },
     welcomeText: {
         fontSize: 14,
