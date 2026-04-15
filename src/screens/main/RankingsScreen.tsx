@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
-  FlatList,
-  SafeAreaView,
+  FlatList
 } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -20,6 +19,7 @@ import {
 import { fetchQuizPackages } from '../../redux/slices/quizSlice';
 import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Rankings'>;
 
@@ -118,8 +118,8 @@ export default function RankingsScreen({ navigation }: Props) {
     activeTab === 'global'
       ? globalRankings
       : selectedPackageId
-      ? packageRankings
-      : [];
+        ? packageRankings
+        : [];
 
   if (loading) {
     return (
@@ -130,118 +130,120 @@ export default function RankingsScreen({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Rankings</Text>
-      </View>
-
-      {/* User's Current Rank */}
-      {userRank && (
-        <View style={styles.userRankCard}>
-          <View style={styles.userRankContent}>
-            <View style={styles.userRankBadge}>
-              <Text style={styles.userRankNumber}>#{userRank.rank}</Text>
-            </View>
-            <View style={styles.userRankInfo}>
-              <Text style={styles.userRankName}>{userRank.userName}</Text>
-              <Text style={styles.userRankPoints}>
-                {userRank.points} points
-              </Text>
-            </View>
-          </View>
-          <View style={styles.userRankMedal}>
-            <Ionicons name="trophy" size={24} color="#fbbf24" />
-          </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Rankings</Text>
         </View>
-      )}
 
-      {/* Tabs */}
-      <View style={styles.tabsContainer}>
-        <TouchableOpacity
-          style={[
-            styles.tab,
-            activeTab === 'global' && styles.activeTab,
-          ]}
-          onPress={() => setActiveTab('global')}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === 'global' && styles.activeTabText,
-            ]}
-          >
-            Global
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.tab,
-            activeTab === 'package' && styles.activeTab,
-          ]}
-          onPress={() => setActiveTab('package')}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === 'package' && styles.activeTabText,
-            ]}
-          >
-            By Package
-          </Text>
-        </TouchableOpacity>
-      </View>
+        {/* User's Current Rank */}
+        {userRank && (
+          <View style={styles.userRankCard}>
+            <View style={styles.userRankContent}>
+              <View style={styles.userRankBadge}>
+                <Text style={styles.userRankNumber}>#{userRank.rank}</Text>
+              </View>
+              <View style={styles.userRankInfo}>
+                <Text style={styles.userRankName}>{userRank.userName}</Text>
+                <Text style={styles.userRankPoints}>
+                  {userRank.points} points
+                </Text>
+              </View>
+            </View>
+            <View style={styles.userRankMedal}>
+              <Ionicons name="trophy" size={24} color="#fbbf24" />
+            </View>
+          </View>
+        )}
 
-      {/* Package Filter */}
-      {activeTab === 'package' && myPackages.length > 0 && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.packageFilter}
-          contentContainerStyle={styles.packageFilterContent}
-        >
-          {myPackages.map((pkg) => (
-            <TouchableOpacity
-              key={pkg.id}
+        {/* Tabs */}
+        <View style={styles.tabsContainer}>
+          <TouchableOpacity
+            style={[
+              styles.tab,
+              activeTab === 'global' && styles.activeTab,
+            ]}
+            onPress={() => setActiveTab('global')}
+          >
+            <Text
               style={[
-                styles.packageFilterButton,
-                selectedPackageId === pkg.id &&
-                  styles.packageFilterButtonActive,
+                styles.tabText,
+                activeTab === 'global' && styles.activeTabText,
               ]}
-              onPress={() => handlePackageSelect(pkg.id)}
             >
-              <Text
-                style={[
-                  styles.packageFilterButtonText,
-                  selectedPackageId === pkg.id &&
-                    styles.packageFilterButtonTextActive,
-                ]}
-                numberOfLines={1}
-              >
-                {pkg.title}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-
-      {/* Rankings List */}
-      {displayRankings.length > 0 ? (
-        <FlatList
-          data={displayRankings}
-          renderItem={({ item, index }) =>
-            renderRankingUser(item, index)
-          }
-          keyExtractor={(item) => `${item.userId}`}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={styles.emptyContainer}>
-          <Ionicons name="trophy-outline" size={48} color="#d1d5db" />
-          <Text style={styles.emptyText}>No rankings available</Text>
+              Global
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.tab,
+              activeTab === 'package' && styles.activeTab,
+            ]}
+            onPress={() => setActiveTab('package')}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === 'package' && styles.activeTabText,
+              ]}
+            >
+              By Package
+            </Text>
+          </TouchableOpacity>
         </View>
-      )}
-    </SafeAreaView>
+
+        {/* Package Filter */}
+        {activeTab === 'package' && myPackages.length > 0 && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.packageFilter}
+            contentContainerStyle={styles.packageFilterContent}
+          >
+            {myPackages.map((pkg) => (
+              <TouchableOpacity
+                key={pkg.Id}
+                style={[
+                  styles.packageFilterButton,
+                  selectedPackageId === pkg.Id &&
+                  styles.packageFilterButtonActive,
+                ]}
+                onPress={() => handlePackageSelect(pkg.Id)}
+              >
+                <Text
+                  style={[
+                    styles.packageFilterButtonText,
+                    selectedPackageId === pkg.Id &&
+                    styles.packageFilterButtonTextActive,
+                  ]}
+                  numberOfLines={1}
+                >
+                  {pkg.Title}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+
+        {/* Rankings List */}
+        {displayRankings.length > 0 ? (
+          <FlatList
+            data={displayRankings}
+            renderItem={({ item, index }) =>
+              renderRankingUser(item, index)
+            }
+            keyExtractor={(item) => `${item.userId}`}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="trophy-outline" size={48} color="#d1d5db" />
+            <Text style={styles.emptyText}>No rankings available</Text>
+          </View>
+        )}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

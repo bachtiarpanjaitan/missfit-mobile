@@ -8,7 +8,6 @@ import {
   Image,
   ActivityIndicator,
   FlatList,
-  SafeAreaView,
 } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -21,6 +20,7 @@ import { fetchGlobalRankings, RankingUser } from '../../redux/slices/rankingSlic
 import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import { formatToRupiah } from '../../../lib/utils';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Dashboard'>;
 
@@ -122,91 +122,93 @@ export default function DashboardScreen({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Welcome Section */}
-        <View style={styles.welcomeSection}>
-          <View>
-            <Text style={styles.welcomeText}>Welcome back!</Text>
-            <Text style={styles.userName}>{user?.name}</Text>
-          </View>
-          <View style={styles.userStats}>
-            <View style={styles.statItem}>
-              <Ionicons name="star" size={20} color="#fbbf24" />
-              <Text style={styles.statValue}>{user?.points || 0}</Text>
-              <Text style={styles.statLabel}>Points</Text>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {/* Welcome Section */}
+          <View style={styles.welcomeSection}>
+            <View>
+              <Text style={styles.welcomeText}>Welcome back!</Text>
+              <Text style={styles.userName}>{user?.name}</Text>
             </View>
-            <View style={styles.statItem}>
-              <Ionicons name="checkbox" size={20} color="#6366f1" />
-              <Text style={styles.statValue}>
-                {user?.totalQuizzesTaken || 0}
-              </Text>
-              <Text style={styles.statLabel}>Completed</Text>
+            <View style={styles.userStats}>
+              <View style={styles.statItem}>
+                <Ionicons name="star" size={20} color="#fbbf24" />
+                <Text style={styles.statValue}>{user?.points || 0}</Text>
+                <Text style={styles.statLabel}>Points</Text>
+              </View>
+              <View style={styles.statItem}>
+                <Ionicons name="checkbox" size={20} color="#6366f1" />
+                <Text style={styles.statValue}>
+                  {user?.totalQuizzesTaken || 0}
+                </Text>
+                <Text style={styles.statLabel}>Completed</Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        {/* Latest Packages */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Latest Quizzes</Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Packages' as never)
-              }
-            >
-              <Text style={styles.viewAll}>View All</Text>
-            </TouchableOpacity>
+          {/* Latest Packages */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Latest Quizzes</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Packages' as never)
+                }
+              >
+                <Text style={styles.viewAll}>View All</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={latestPackages}
+              renderItem={({ item }) => renderPackageCard(item)}
+              keyExtractor={(item) => item.Id}
+              scrollEnabled={false}
+            />
           </View>
-          <FlatList
-            data={latestPackages}
-            renderItem={({ item }) => renderPackageCard(item)}
-            keyExtractor={(item) => item.Id}
-            scrollEnabled={false}
-          />
-        </View>
 
-        {/* Free Packages */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Free Quizzes</Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Packages' as never)
-              }
-            >
-              <Text style={styles.viewAll}>View All</Text>
-            </TouchableOpacity>
+          {/* Free Packages */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Free Quizzes</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Packages' as never)
+                }
+              >
+                <Text style={styles.viewAll}>View All</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={freePackages}
+              renderItem={({ item }) => renderPackageCard(item)}
+              keyExtractor={(item) => item.Id}
+              scrollEnabled={false}
+            />
           </View>
-          <FlatList
-            data={freePackages}
-            renderItem={({ item }) => renderPackageCard(item)}
-            keyExtractor={(item) => item.Id}
-            scrollEnabled={false}
-          />
-        </View>
 
-        {/* Top Rankings */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Top 10 Global Rankings</Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Rankings' as never)
-              }
-            >
-              <Text style={styles.viewAll}>View More</Text>
-            </TouchableOpacity>
+          {/* Top Rankings */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Top 10 Global Rankings</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Rankings' as never)
+                }
+              >
+                <Text style={styles.viewAll}>View More</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.rankingsList}>
+              {topRankings.map((item) => renderRankingItem(item))}
+            </View>
           </View>
-          <View style={styles.rankingsList}>
-            {topRankings.map((item) => renderRankingItem(item))}
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

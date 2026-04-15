@@ -8,9 +8,9 @@ import {
   Image,
   ActivityIndicator,
   FlatList,
-  SafeAreaView,
   TextInput
 } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -146,63 +146,65 @@ export default function PackagesScreen({ navigation }: Props) {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Quiz Packages</Text>
-      </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Quiz Packages</Text>
+        </View>
 
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#9ca3af" />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search quizzes..."
-          placeholderTextColor="#d1d5db"
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-      </View>
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={20} color="#9ca3af" />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search quizzes..."
+            placeholderTextColor="#d1d5db"
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+        </View>
 
-      <View style={styles.filterTabs}>
-        {(['all', 'free', 'paid'] as const).map((tab) => (
-          <TouchableOpacity
-            key={tab}
-            style={[
-              styles.filterTab,
-              filter === tab && styles.filterTabActive,
-            ]}
-            onPress={() => setFilter(tab)}
-          >
-            <Text
+        <View style={styles.filterTabs}>
+          {(['all', 'free', 'paid'] as const).map((tab) => (
+            <TouchableOpacity
+              key={tab}
               style={[
-                styles.filterTabText,
-                filter === tab && styles.filterTabTextActive,
+                styles.filterTab,
+                filter === tab && styles.filterTabActive,
               ]}
+              onPress={() => setFilter(tab)}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+              <Text
+                style={[
+                  styles.filterTabText,
+                  filter === tab && styles.filterTabTextActive,
+                ]}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#6366f1" />
-        </View>
-      ) : filteredPackages.length > 0 ? (
-        <FlatList
-          data={filteredPackages}
-          renderItem={({ item }) => renderPackageCard(item)}
-          keyExtractor={(item) => item.Id}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={styles.emptyContainer}>
-          <Ionicons name="search" size={48} color="#d1d5db" />
-          <Text style={styles.emptyText}>No quizzes found</Text>
-        </View>
-      )}
-    </SafeAreaView>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#6366f1" />
+          </View>
+        ) : filteredPackages.length > 0 ? (
+          <FlatList
+            data={filteredPackages}
+            renderItem={({ item }) => renderPackageCard(item)}
+            keyExtractor={(item) => item.Id}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="search" size={48} color="#d1d5db" />
+            <Text style={styles.emptyText}>No quizzes found</Text>
+          </View>
+        )}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

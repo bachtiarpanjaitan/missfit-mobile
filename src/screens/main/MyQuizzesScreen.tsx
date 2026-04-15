@@ -8,7 +8,6 @@ import {
   Image,
   ActivityIndicator,
   FlatList,
-  SafeAreaView,
   Alert,
 } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -21,6 +20,7 @@ import {
 } from '../../redux/slices/quizSlice';
 import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'MyQuizzes'>;
 
@@ -35,15 +35,15 @@ export default function MyQuizzesScreen({ navigation }: Props) {
   }, []);
 
   const handleStartQuiz = (packageId: string) => {
-    const pkg = myPackages.find((p) => p.id === packageId);
+    const pkg = myPackages.find((p) => p.Id === packageId);
     if (!pkg) return;
 
     // Check if max attempts exceeded
-    if (pkg.totalAttempts !== undefined && pkg.maxAttempts) {
-      if (pkg.totalAttempts >= pkg.maxAttempts) {
+    if (pkg.TotalAttempts !== undefined && pkg.MaxAttempts) {
+      if (pkg.TotalAttempts >= pkg.MaxAttempts) {
         Alert.alert(
           'Maximum Attempts Exceeded',
-          `You have reached the maximum of ${pkg.maxAttempts} attempts for this quiz`
+          `You have reached the maximum of ${pkg.MaxAttempts} attempts for this quiz`
         );
         return;
       }
@@ -60,9 +60,9 @@ export default function MyQuizzesScreen({ navigation }: Props) {
       avgScore:
         packageResults.length > 0
           ? Math.round(
-              packageResults.reduce((sum, r) => sum + r.score, 0) /
-                packageResults.length
-            )
+            packageResults.reduce((sum, r) => sum + r.score, 0) /
+            packageResults.length
+          )
           : 0,
       bestScore:
         packageResults.length > 0
@@ -72,33 +72,33 @@ export default function MyQuizzesScreen({ navigation }: Props) {
   };
 
   const renderQuizCard = (item: QuizPackage) => {
-    const stats = getPackageStats(item.id);
+    const stats = getPackageStats(item.Id);
     const canAttempt =
-      !item.maxAttempts || (item.totalAttempts || 0) < item.maxAttempts;
+      !item.MaxAttempts || (item.TotalAttempts || 0) < item.MaxAttempts;
 
     return (
-      <View key={item.id} style={styles.quizCard}>
-        {item.image && (
-          <Image source={{ uri: item.image }} style={styles.quizImage} />
+      <View key={item.Id} style={styles.quizCard}>
+        {item.ThumbnailUrl && (
+          <Image source={{ uri: item.ThumbnailUrl }} style={styles.quizImage} />
         )}
         <View style={styles.quizContent}>
           <View style={styles.quizHeader}>
             <View style={styles.quizInfo}>
               <Text style={styles.quizTitle} numberOfLines={2}>
-                {item.title}
+                {item.Title}
               </Text>
-              <Text style={styles.quizCategory}>{item.category}</Text>
+              <Text style={styles.quizCategory}>{item.Category}</Text>
             </View>
             <View style={styles.difficultyBadge}>
               <Text
                 style={[
                   styles.difficultyText,
-                  item.difficulty === 'easy' && styles.easyBg,
-                  item.difficulty === 'medium' && styles.mediumBg,
-                  item.difficulty === 'hard' && styles.hardBg,
+                  item.DifficultyLevel === 'easy' && styles.easyBg,
+                  item.DifficultyLevel === 'medium' && styles.mediumBg,
+                  item.DifficultyLevel === 'hard' && styles.hardBg,
                 ]}
               >
-                {item.difficulty.charAt(0).toUpperCase()}
+                {item.DifficultyLevel.charAt(0).toUpperCase()}
               </Text>
             </View>
           </View>
@@ -118,19 +118,18 @@ export default function MyQuizzesScreen({ navigation }: Props) {
             </View>
           </View>
 
-          {item.maxAttempts && (
+          {item.MaxAttempts && (
             <View style={styles.attemptsBar}>
               <Text style={styles.attemptsText}>
-                Attempts: {item.totalAttempts || 0}/{item.maxAttempts}
+                Attempts: {item.TotalAttempts || 0}/{item.MaxAttempts}
               </Text>
               <View style={styles.progressBar}>
                 <View
                   style={[
                     styles.progressFill,
                     {
-                      width: `${
-                        ((item.totalAttempts || 0) / item.maxAttempts) * 100
-                      }%`,
+                      width: `${((item.TotalAttempts || 0) / item.MaxAttempts) * 100
+                        }%`,
                     },
                   ]}
                 />
@@ -143,7 +142,7 @@ export default function MyQuizzesScreen({ navigation }: Props) {
               styles.startButton,
               !canAttempt && styles.disabledButton,
             ]}
-            onPress={() => handleStartQuiz(item.id)}
+            onPress={() => handleStartQuiz(item.Id)}
             disabled={!canAttempt}
           >
             <Text style={styles.startButtonText}>
@@ -164,32 +163,34 @@ export default function MyQuizzesScreen({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Quizzes</Text>
-        <Text style={styles.headerSubtitle}>
-          {myPackages.length} purchased
-        </Text>
-      </View>
-
-      {myPackages.length > 0 ? (
-        <FlatList
-          data={myPackages}
-          renderItem={({ item }) => renderQuizCard(item)}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={styles.emptyContainer}>
-          <Ionicons name="checkbox-outline" size={48} color="#d1d5db" />
-          <Text style={styles.emptyText}>No quizzes purchased yet</Text>
-          <Text style={styles.emptySubtext}>
-            Explore packages and start learning
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>My Quizzes</Text>
+          <Text style={styles.headerSubtitle}>
+            {myPackages.length} purchased
           </Text>
         </View>
-      )}
-    </SafeAreaView>
+
+        {myPackages.length > 0 ? (
+          <FlatList
+            data={myPackages}
+            renderItem={({ item }) => renderQuizCard(item)}
+            keyExtractor={(item) => item.Id}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="checkbox-outline" size={48} color="#d1d5db" />
+            <Text style={styles.emptyText}>No quizzes purchased yet</Text>
+            <Text style={styles.emptySubtext}>
+              Explore packages and start learning
+            </Text>
+          </View>
+        )}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

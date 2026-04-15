@@ -8,7 +8,6 @@ import {
   TextInput,
   Image,
   ActivityIndicator,
-  SafeAreaView,
   Alert,
   Modal,
 } from 'react-native';
@@ -18,6 +17,7 @@ import { updateProfile, logoutUser } from '../../redux/slices/authSlice';
 import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Profile'>;
 
@@ -73,7 +73,7 @@ export default function ProfileScreen({ navigation }: Props) {
 
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
-      { text: 'Cancel', onPress: () => {} },
+      { text: 'Cancel', onPress: () => { } },
       {
         text: 'Logout',
         onPress: () => {
@@ -89,178 +89,180 @@ export default function ProfileScreen({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
-      </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Profile</Text>
+        </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Avatar Section */}
-        <View style={styles.avatarSection}>
-          {editedAvatar || user?.avatar ? (
-            <Image
-              source={{ uri: editedAvatar || user?.avatar }}
-              style={styles.avatar}
-            />
-          ) : (
-            <View style={styles.avatarPlaceholder}>
-              <Ionicons name="person" size={48} color="#9ca3af" />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {/* Avatar Section */}
+          <View style={styles.avatarSection}>
+            {editedAvatar || user?.avatar ? (
+              <Image
+                source={{ uri: editedAvatar || user?.avatar }}
+                style={styles.avatar}
+              />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <Ionicons name="person" size={48} color="#9ca3af" />
+              </View>
+            )}
+            {isEditing && (
+              <TouchableOpacity
+                style={styles.editAvatarButton}
+                onPress={handlePickImage}
+              >
+                <Ionicons name="camera" size={20} color="#ffffff" />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* Profile Form */}
+          <View style={styles.formSection}>
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Full Name</Text>
+              <TextInput
+                style={[styles.input, !isEditing && styles.inputDisabled]}
+                value={editedName}
+                onChangeText={setEditedName}
+                editable={isEditing}
+                placeholder="Enter your name"
+              />
             </View>
-          )}
+
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={[styles.input, !isEditing && styles.inputDisabled]}
+                value={editedEmail}
+                onChangeText={setEditedEmail}
+                editable={isEditing}
+                keyboardType="email-address"
+                placeholder="Enter your email"
+              />
+            </View>
+          </View>
+
+          {/* Stats Section */}
+          <View style={styles.statsSection}>
+            <View style={styles.statCard}>
+              <View style={styles.statCardIcon}>
+                <Ionicons name="star" size={24} color="#fbbf24" />
+              </View>
+              <View style={styles.statCardContent}>
+                <Text style={styles.statCardLabel}>Total Points</Text>
+                <Text style={styles.statCardValue}>{user?.points || 0}</Text>
+              </View>
+            </View>
+
+            <View style={styles.statCard}>
+              <View style={styles.statCardIcon}>
+                <Ionicons name="checkbox" size={24} color="#6366f1" />
+              </View>
+              <View style={styles.statCardContent}>
+                <Text style={styles.statCardLabel}>Quizzes Completed</Text>
+                <Text style={styles.statCardValue}>
+                  {user?.totalQuizzesTaken || 0}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Edit/Save Button */}
+          <TouchableOpacity
+            style={[styles.mainButton, loading && styles.disabledButton]}
+            onPress={() => {
+              if (isEditing) {
+                handleUpdateProfile();
+              } else {
+                setIsEditing(true);
+              }
+            }}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#ffffff" />
+            ) : (
+              <>
+                <Ionicons
+                  name={isEditing ? 'checkmark' : 'pencil'}
+                  size={20}
+                  color="#ffffff"
+                />
+                <Text style={styles.mainButtonText}>
+                  {isEditing ? 'Save Changes' : 'Edit Profile'}
+                </Text>
+              </>
+            )}
+          </TouchableOpacity>
+
           {isEditing && (
             <TouchableOpacity
-              style={styles.editAvatarButton}
-              onPress={handlePickImage}
+              style={styles.cancelButton}
+              onPress={() => {
+                setIsEditing(false);
+                setEditedName(user?.name || '');
+                setEditedEmail(user?.email || '');
+                setEditedAvatar(user?.avatar);
+              }}
             >
-              <Ionicons name="camera" size={20} color="#ffffff" />
+              <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           )}
-        </View>
 
-        {/* Profile Form */}
-        <View style={styles.formSection}>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Full Name</Text>
-            <TextInput
-              style={[styles.input, !isEditing && styles.inputDisabled]}
-              value={editedName}
-              onChangeText={setEditedName}
-              editable={isEditing}
-              placeholder="Enter your name"
-            />
+          {/* Account Section */}
+          <View style={styles.accountSection}>
+            <Text style={styles.sectionTitle}>Account Settings</Text>
+
+            <TouchableOpacity
+              style={styles.settingItem}
+              onPress={handleChangePassword}
+            >
+              <View style={styles.settingItemLeft}>
+                <Ionicons name="lock-closed" size={20} color="#6366f1" />
+                <Text style={styles.settingItemText}>Change Password</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color="#d1d5db" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.settingItem}
+              onPress={() => Alert.alert('Info', 'Version 1.0.0')}
+            >
+              <View style={styles.settingItemLeft}>
+                <Ionicons name="information-circle" size={20} color="#6366f1" />
+                <Text style={styles.settingItemText}>About App</Text>
+              </View>
+              <Text style={styles.settingItemValue}>v1.0.0</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.settingItem}
+              onPress={() => Alert.alert('Info', 'Privacy Policy')}
+            >
+              <View style={styles.settingItemLeft}>
+                <Ionicons name="document-text" size={20} color="#6366f1" />
+                <Text style={styles.settingItemText}>Privacy Policy</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color="#d1d5db" />
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={[styles.input, !isEditing && styles.inputDisabled]}
-              value={editedEmail}
-              onChangeText={setEditedEmail}
-              editable={isEditing}
-              keyboardType="email-address"
-              placeholder="Enter your email"
-            />
-          </View>
-        </View>
-
-        {/* Stats Section */}
-        <View style={styles.statsSection}>
-          <View style={styles.statCard}>
-            <View style={styles.statCardIcon}>
-              <Ionicons name="star" size={24} color="#fbbf24" />
-            </View>
-            <View style={styles.statCardContent}>
-              <Text style={styles.statCardLabel}>Total Points</Text>
-              <Text style={styles.statCardValue}>{user?.points || 0}</Text>
-            </View>
-          </View>
-
-          <View style={styles.statCard}>
-            <View style={styles.statCardIcon}>
-              <Ionicons name="checkbox" size={24} color="#6366f1" />
-            </View>
-            <View style={styles.statCardContent}>
-              <Text style={styles.statCardLabel}>Quizzes Completed</Text>
-              <Text style={styles.statCardValue}>
-                {user?.totalQuizzesTaken || 0}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Edit/Save Button */}
-        <TouchableOpacity
-          style={[styles.mainButton, loading && styles.disabledButton]}
-          onPress={() => {
-            if (isEditing) {
-              handleUpdateProfile();
-            } else {
-              setIsEditing(true);
-            }
-          }}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#ffffff" />
-          ) : (
-            <>
-              <Ionicons
-                name={isEditing ? 'checkmark' : 'pencil'}
-                size={20}
-                color="#ffffff"
-              />
-              <Text style={styles.mainButtonText}>
-                {isEditing ? 'Save Changes' : 'Edit Profile'}
-              </Text>
-            </>
-          )}
-        </TouchableOpacity>
-
-        {isEditing && (
+          {/* Logout Button */}
           <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={() => {
-              setIsEditing(false);
-              setEditedName(user?.name || '');
-              setEditedEmail(user?.email || '');
-              setEditedAvatar(user?.avatar);
-            }}
+            style={styles.logoutButton}
+            onPress={handleLogout}
           >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
+            <Ionicons name="log-out" size={20} color="#ef4444" />
+            <Text style={styles.logoutButtonText}>Logout</Text>
           </TouchableOpacity>
-        )}
-
-        {/* Account Section */}
-        <View style={styles.accountSection}>
-          <Text style={styles.sectionTitle}>Account Settings</Text>
-
-          <TouchableOpacity
-            style={styles.settingItem}
-            onPress={handleChangePassword}
-          >
-            <View style={styles.settingItemLeft}>
-              <Ionicons name="lock-closed" size={20} color="#6366f1" />
-              <Text style={styles.settingItemText}>Change Password</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#d1d5db" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.settingItem}
-            onPress={() => Alert.alert('Info', 'Version 1.0.0')}
-          >
-            <View style={styles.settingItemLeft}>
-              <Ionicons name="information-circle" size={20} color="#6366f1" />
-              <Text style={styles.settingItemText}>About App</Text>
-            </View>
-            <Text style={styles.settingItemValue}>v1.0.0</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.settingItem}
-            onPress={() => Alert.alert('Info', 'Privacy Policy')}
-          >
-            <View style={styles.settingItemLeft}>
-              <Ionicons name="document-text" size={20} color="#6366f1" />
-              <Text style={styles.settingItemText}>Privacy Policy</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#d1d5db" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Logout Button */}
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress={handleLogout}
-        >
-          <Ionicons name="log-out" size={20} color="#ef4444" />
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
