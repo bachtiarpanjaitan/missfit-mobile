@@ -24,13 +24,14 @@ import {
 } from '../../redux/slices/quizSlice';
 import { RootStackParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
+import { styles } from "../../styles/globalStyles";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'QuizTaking'>;
 
 export default function QuizTakingScreen({ route, navigation }: Props) {
   const { packageId } = route.params;
   const dispatch = useAppDispatch();
-  const { currentQuiz, packages, loading } = useAppSelector(
+  const { currentQuiz, allPackages, loading } = useAppSelector(
     (state) => state.quiz
   );
   const [showExplanation, setShowExplanation] = useState(false);
@@ -40,7 +41,7 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
   const quiz = currentQuiz;
   const currentQuestion = quiz.questions[quiz.currentQuestionIndex];
   const selectedAnswer = quiz.answers[currentQuestion?.id];
-  const pkg = packages.find((p) => p.id === packageId);
+  const pkg = allPackages.find((p) => p.Id === packageId);
 
   useEffect(() => {
     // Initialize quiz
@@ -166,7 +167,7 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
         </TouchableOpacity>
         <View style={styles.headerCenter}>
           <Text style={styles.headerTitle} numberOfLines={1}>
-            {pkg?.title}
+            {pkg?.Title}
           </Text>
           <Text style={styles.headerSubtitle}>
             {quiz.currentQuestionIndex + 1} / {quiz.questions.length}
@@ -317,7 +318,7 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
           style={[
             styles.navButton,
             quiz.currentQuestionIndex === quiz.questions.length - 1 &&
-              styles.navButtonDisabled,
+            styles.navButtonDisabled,
           ]}
           onPress={handleNext}
           disabled={quiz.currentQuestionIndex === quiz.questions.length - 1}
@@ -328,219 +329,3 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
-  },
-  headerCenter: {
-    flex: 1,
-    marginHorizontal: 12,
-  },
-  headerTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1f2937',
-  },
-  headerSubtitle: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginTop: 2,
-  },
-  timer: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#6366f1',
-  },
-  progressContainer: {
-    height: 4,
-    backgroundColor: '#e5e7eb',
-    overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: '#6366f1',
-  },
-  scrollContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 20,
-  },
-  questionSection: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  questionImage: {
-    width: '100%',
-    height: 200,
-    borderRadius: 8,
-    marginBottom: 12,
-    backgroundColor: '#e5e7eb',
-  },
-  questionText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1f2937',
-    lineHeight: 24,
-  },
-  answersSection: {
-    gap: 12,
-  },
-  answersTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1f2937',
-  },
-  answerButton: {
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#e5e7eb',
-    gap: 12,
-    alignItems: 'flex-start',
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-  },
-  answerButtonSelected: {
-    borderColor: '#6366f1',
-    backgroundColor: '#f0f4ff',
-  },
-  answerButtonCorrect: {
-    borderColor: '#16a34a',
-    backgroundColor: '#dcfce7',
-  },
-  answerButtonIncorrect: {
-    borderColor: '#dc2626',
-    backgroundColor: '#fee2e2',
-  },
-  answerIndicator: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#d1d5db',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 2,
-  },
-  answerIndicatorSelected: {
-    borderColor: '#6366f1',
-    backgroundColor: '#6366f1',
-  },
-  answerIndicatorCorrect: {
-    borderColor: '#16a34a',
-    backgroundColor: '#16a34a',
-  },
-  answerIndicatorIncorrect: {
-    borderColor: '#dc2626',
-    backgroundColor: '#dc2626',
-  },
-  answerImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 6,
-    backgroundColor: '#e5e7eb',
-  },
-  answerContent: {
-    flex: 1,
-  },
-  answerText: {
-    fontSize: 13,
-    color: '#1f2937',
-    lineHeight: 18,
-  },
-  explanationSection: {
-    backgroundColor: '#dbeafe',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    gap: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#0284c7',
-  },
-  explanationHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  explanationTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#0284c7',
-  },
-  explanationText: {
-    fontSize: 13,
-    color: '#0c4a6e',
-    lineHeight: 20,
-  },
-  actionButtons: {
-    gap: 12,
-  },
-  skipButton: {
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#d1d5db',
-    alignItems: 'center',
-  },
-  skipButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#6b7280',
-  },
-  submitAnswerButton: {
-    backgroundColor: '#6366f1',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  submitAnswerButtonText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  navigationBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#ffffff',
-    borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
-  },
-  navButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#f3f4f6',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  navButtonDisabled: {
-    opacity: 0.5,
-  },
-});

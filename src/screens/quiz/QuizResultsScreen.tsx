@@ -13,6 +13,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { RootStackParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import { PieChart } from 'react-native-svg-charts';
+import { styles } from "../../styles/globalStyles";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'QuizResults'>;
 
@@ -23,7 +24,7 @@ export default function QuizResultsScreen({ route, navigation }: Props) {
   const results = useAppSelector((state) => state.quiz.results);
   const result = results.find((r) => r.id === resultId);
   const pkg = useAppSelector((state) =>
-    state.quiz.packages.find((p) => p.id === packageId)
+    state.quiz.allPackages.find((p) => p.Id === packageId)
   );
 
   const correctAnswers = result?.score
@@ -74,7 +75,7 @@ export default function QuizResultsScreen({ route, navigation }: Props) {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Quiz Results</Text>
-          <Text style={styles.packageTitle}>{pkg?.title}</Text>
+          <Text style={styles.packageTitle}>{pkg?.Title}</Text>
         </View>
 
         {/* Score Circle */}
@@ -235,8 +236,8 @@ export default function QuizResultsScreen({ route, navigation }: Props) {
                 {scorePercentage >= 90
                   ? 'You have mastered this quiz!'
                   : scorePercentage >= 70
-                  ? 'Good job! You passed this quiz.'
-                  : 'Try again to improve your score.'}
+                    ? 'Good job! You passed this quiz.'
+                    : 'Try again to improve your score.'}
               </Text>
             </View>
           </View>
@@ -272,198 +273,3 @@ export default function QuizResultsScreen({ route, navigation }: Props) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  scrollContent: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 20,
-    gap: 20,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1f2937',
-  },
-  packageTitle: {
-    fontSize: 13,
-    color: '#6b7280',
-    marginTop: 4,
-  },
-  scoreCard: {
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    paddingVertical: 24,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  scoreCircle: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    borderWidth: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  scorePercentage: {
-    fontSize: 48,
-    fontWeight: '700',
-  },
-  scoreRating: {
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  statItem: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    alignItems: 'center',
-    gap: 8,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-  },
-  statIcon: {
-    marginBottom: 4,
-  },
-  statContent: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1f2937',
-  },
-  statLabel: {
-    fontSize: 11,
-    color: '#6b7280',
-    marginTop: 2,
-  },
-  detailsContainer: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  detailsTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#1f2937',
-    marginBottom: 12,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
-  },
-  detailLeft: {
-    flex: 1,
-  },
-  detailRight: {
-    flex: 1,
-  },
-  detailDivider: {
-    width: 1,
-    height: 40,
-    backgroundColor: '#e5e7eb',
-  },
-  detailLabel: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginBottom: 2,
-  },
-  detailValue: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1f2937',
-  },
-  feedbackContainer: {
-    marginBottom: 12,
-  },
-  feedbackCard: {
-    flexDirection: 'row',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 12,
-    alignItems: 'flex-start',
-  },
-  feedbackContent: {
-    flex: 1,
-  },
-  feedbackTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  feedbackText: {
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 12,
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-  },
-  primaryButton: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#6366f1',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  primaryButtonText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    flexDirection: 'row',
-    borderWidth: 2,
-    borderColor: '#6366f1',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  secondaryButtonText: {
-    color: '#6366f1',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-});

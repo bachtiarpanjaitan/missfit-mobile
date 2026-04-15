@@ -10,6 +10,7 @@ import MainNavigator from './MainNavigator';
 import QuizTakingScreen from '../screens/quiz/QuizTakingScreen';
 import PaymentFlowScreen from '../screens/payment/PaymentFlowScreen';
 import QuizResultsScreen from '../screens/quiz/QuizResultsScreen';
+import FreePaymentFlowScreen from '../screens/payment/FreePaymentFlowScreen';
 
 // Types
 import { RootStackParamList } from './types';
@@ -62,6 +63,13 @@ export default function RootNavigator() {
               <Stack.Screen
                 name="PaymentFlow"
                 component={PaymentFlowScreen}
+                options={{
+                  animation: 'none',
+                }}
+              />
+              <Stack.Screen
+                name="FreePaymentFlow"
+                component={FreePaymentFlowScreen}
                 options={{
                   animation: 'none',
                 }}

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
   Image,
@@ -21,6 +20,7 @@ import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import { formatToRupiah } from '../../../lib/utils';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from "../../styles/globalStyles";
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Dashboard'>;
 
@@ -151,7 +151,7 @@ export default function DashboardScreen({ navigation }: Props) {
           </View>
 
           {/* Latest Packages */}
-          <View style={styles.section}>
+          <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Latest Quizzes</Text>
               <TouchableOpacity
@@ -171,7 +171,7 @@ export default function DashboardScreen({ navigation }: Props) {
           </View>
 
           {/* Free Packages */}
-          <View style={styles.section}>
+          <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Free Quizzes</Text>
               <TouchableOpacity
@@ -211,177 +211,3 @@ export default function DashboardScreen({ navigation }: Props) {
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  scrollContent: {
-    paddingBottom: 20,
-  },
-  welcomeSection: {
-    backgroundColor: '#6366f1',
-    paddingHorizontal: 16,
-    paddingVertical: 20,
-    gap: 16,
-  },
-  welcomeText: {
-    fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.8)',
-  },
-  userName: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#ffffff',
-  },
-  userStats: {
-    flexDirection: 'row',
-    gap: 20,
-  },
-  statItem: {
-    alignItems: 'center',
-    gap: 4,
-  },
-  statValue: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#ffffff',
-  },
-  statLabel: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.8)',
-  },
-  section: {
-    marginTop: 24,
-    paddingHorizontal: 16,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1f2937',
-  },
-  viewAll: {
-    fontSize: 14,
-    color: '#6366f1',
-    fontWeight: '600',
-  },
-  packageCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  packageImage: {
-    width: '100%',
-    height: 150,
-    backgroundColor: '#e5e7eb',
-  },
-  packageContent: {
-    padding: 12,
-  },
-  packageHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-    gap: 8,
-  },
-  packageTitle: {
-    flex: 1,
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#1f2937',
-  },
-  priceBadge: {
-    backgroundColor: '#dbeafe',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  priceText: {
-    color: '#0284c7',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  packageDescription: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginBottom: 8,
-  },
-  packageMeta: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  metaItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  metaText: {
-    fontSize: 12,
-    color: '#6b7280',
-  },
-  rankingsList: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    overflow: 'hidden',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  rankingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
-    gap: 12,
-  },
-  rankBadge: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#fef3c7',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  rankText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#92400e',
-  },
-  userAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#d1d5db',
-  },
-  rankingContent: {
-    flex: 1,
-  },
-  rankingName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1f2937',
-    marginBottom: 2,
-  },
-  rankingPoints: {
-    fontSize: 12,
-    color: '#6b7280',
-  },
-});

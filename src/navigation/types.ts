@@ -10,6 +10,9 @@ export type RootStackParamList = {
     packageId: string;
     amount: number;
   };
+  FreePaymentFlow: {
+    packageId: string;
+  };
   QuizResults: {
     packageId: string;
     resultId: string;
