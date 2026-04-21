@@ -8,17 +8,19 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.missfit.app"
+      "bundleIdentifier": "com.basapadi.missfit"
     },
     "android": {
-      "package": "com.missfit.app"
+      "package": "com.basapadi.missfit"
     },
     "web": {},
     "plugins": [
       "expo-image-picker"
     ],
     "extra": {
-      "API_BASE_URL": "http://192.168.1.6:8000/api",
+      "APP_ENV": "development",
+      "LOG_LEVEL": "debug",
+      "API_BASE_URL": "http://192.168.1.5:8000/api",
       "API_TIMEOUT": "30000"
     }
   }
