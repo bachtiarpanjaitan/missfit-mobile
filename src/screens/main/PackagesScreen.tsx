@@ -62,10 +62,7 @@ export default function PackagesScreen({ navigation }: Props) {
     <TouchableOpacity
       key={item.Id}
       style={styles.packageCard}
-      onPress={() => {
-        // Navigate to quiz detail or start quiz
-        navigation.navigate('MyQuizzes');
-      }}
+      disabled
     >
       {item.ThumbnailUrl && (
         <Image

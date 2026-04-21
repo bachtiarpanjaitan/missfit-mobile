@@ -693,9 +693,10 @@ export const styles = StyleSheet.create({
     },
     actionButton: {
         backgroundColor: '#6366f1',
-        paddingVertical: 10,
+        paddingVertical: 15,
         borderRadius: 6,
         alignItems: 'center',
+        marginTop: 10,
     },
     actionButtonText: {
         color: '#ffffff',
