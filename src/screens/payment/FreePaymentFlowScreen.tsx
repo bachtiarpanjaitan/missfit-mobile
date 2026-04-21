@@ -8,6 +8,9 @@ import {
     Alert,
     Image,
 } from 'react-native';
+import {
+    initiateFreePayment,
+} from '../../redux/slices/paymentSlice';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RootStackParamList } from '../../navigation/types';
@@ -27,10 +30,20 @@ export default function FreePaymentFlowScreen({ route, navigation }: Props) {
     );
 
     const handlePayment = async () => {
-        Alert.alert('Payment', 'Payment successful');
-        navigation.navigate('Main' as any, {
-            screen: 'MyQuizzes',
-        });
+        // Alert.alert('Payment', 'Payment successful');
+        const result = await dispatch(
+            initiateFreePayment({
+                packageId
+            })
+        );
+
+        if (initiateFreePayment.fulfilled.match(result)) {
+            navigation.navigate('Main' as any, {
+                screen: 'MyQuizzes',
+            });
+        } else {
+            Alert.alert('Error', error || 'Failed to get free package');
+        }
     };
 
     return (

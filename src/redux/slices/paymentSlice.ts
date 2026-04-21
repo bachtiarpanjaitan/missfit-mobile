@@ -37,6 +37,14 @@ export const initiatePayment = createAsyncThunk(
   }
 );
 
+export const initiateFreePayment = createAsyncThunk(
+  'payment/initiateFree',
+  async (data: { packageId: string }) => {
+    const response = await api.post('/payments/initiate-free', data);
+    return response.data.data;
+  }
+);
+
 export const verifyPayment = createAsyncThunk(
   'payment/verify',
   async (transactionId: string) => {
