@@ -767,7 +767,7 @@ export const styles = StyleSheet.create({
     },
     statBox: {
         flex: 1,
-        backgroundColor: '#f3f4f6',
+        backgroundColor: '#4c4c4cff',
         paddingVertical: 8,
         paddingHorizontal: 6,
         borderRadius: 6,

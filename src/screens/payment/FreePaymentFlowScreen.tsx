@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {
     initiateFreePayment,
+    clearError
 } from '../../redux/slices/paymentSlice';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -25,6 +26,11 @@ export default function FreePaymentFlowScreen({ route, navigation }: Props) {
     const { loading, currentPayment, error, successMessage } = useAppSelector(
         (state) => state.payment
     );
+
+    useEffect(() => {
+        dispatch(clearError());
+    }, [dispatch]);
+
     const pkg = useAppSelector((state) =>
         state.quiz.allPackages.find((p) => p.Id === packageId)
     );
@@ -38,11 +44,13 @@ export default function FreePaymentFlowScreen({ route, navigation }: Props) {
         );
 
         if (initiateFreePayment.fulfilled.match(result)) {
+            Alert.alert('Payment Success', successMessage || "Success");
             navigation.navigate('Main' as any, {
                 screen: 'MyQuizzes',
             });
         } else {
-            Alert.alert('Error', error || 'Failed to get free package');
+            // console.log('error', error);
+            // Alert.alert('Error', error?.message || 'Failed to get free package');
         }
     };
 

@@ -31,41 +31,61 @@ const initialState: PaymentState = {
 // Thunks
 export const initiatePayment = createAsyncThunk(
   'payment/initiate',
-  async (data: { packageId: string; method: string }) => {
-    const response = await api.post('/payments/initiate', data);
-    return response.data.data;
+  async (data: { packageId: string; method: string }, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/payments/initiate', data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data);
+    }
   }
 );
 
 export const initiateFreePayment = createAsyncThunk(
   'payment/initiateFree',
-  async (data: { packageId: string }) => {
-    const response = await api.post('/payments/initiate-free', data);
-    return response.data.data;
+  async (data: { packageId: string }, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/payments/initiate-free', data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data);
+    }
   }
 );
 
 export const verifyPayment = createAsyncThunk(
   'payment/verify',
-  async (transactionId: string) => {
-    const response = await api.post('/payments/verify', { transactionId });
-    return response.data.data;
+  async (transactionId: string, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/payments/verify', { transactionId });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data);
+    }
   }
 );
 
 export const fetchPaymentHistory = createAsyncThunk(
   'payment/fetchHistory',
-  async () => {
-    const response = await api.get('/payments/history');
-    return response.data.data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get('/payments/history');
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data);
+    }
   }
 );
 
 export const cancelPayment = createAsyncThunk(
   'payment/cancel',
-  async (transactionId: string) => {
-    const response = await api.post('/payments/cancel', { transactionId });
-    return response.data.data;
+  async (transactionId: string, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/payments/cancel', { transactionId });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data);
+    }
   }
 );
 
@@ -96,6 +116,16 @@ const paymentSlice = createSlice({
       .addCase(initiatePayment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to initiate payment';
+      })
+      .addCase(initiateFreePayment.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log('action payload', action.payload);
+        state.currentPayment = action.payload;
+        state.successMessage = action.payload.message;
+      })
+      .addCase(initiateFreePayment.rejected, (state, action: any) => {
+        state.loading = false;
+        state.error = action.payload?.message || 'Failed to process free payment';
       })
       .addCase(verifyPayment.pending, (state) => {
         state.loading = true;

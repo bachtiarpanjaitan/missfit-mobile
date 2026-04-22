@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  ScrollView,
   TouchableOpacity,
   Image,
   ActivityIndicator,
@@ -16,12 +14,12 @@ import {
   fetchMyQuizPackages,
   fetchQuizResults,
   QuizPackage,
-  QuizResult,
 } from '../../redux/slices/quizSlice';
 import { MainTabParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from "../../styles/globalStyles";
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'MyQuizzes'>;
 
@@ -30,10 +28,12 @@ export default function MyQuizzesScreen({ navigation }: Props) {
   const { myPackages, loading } = useAppSelector((state) => state.quiz);
   const results = useAppSelector((state) => state.quiz.results);
 
-  useEffect(() => {
-    dispatch(fetchMyQuizPackages());
-    dispatch(fetchQuizResults());
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(fetchMyQuizPackages());
+      dispatch(fetchQuizResults());
+    }, [dispatch])
+  );
 
   const handleStartQuiz = (packageId: string) => {
     const pkg = myPackages.find((p) => p.Id === packageId);
@@ -72,7 +72,8 @@ export default function MyQuizzesScreen({ navigation }: Props) {
     };
   };
 
-  const renderQuizCard = (item: QuizPackage) => {
+  const renderQuizCard = (qp: any) => {
+    const item: QuizPackage = qp.QuizPackage;
     const stats = getPackageStats(item.Id);
     const canAttempt =
       !item.MaxAttempts || (item.TotalAttempts || 0) < item.MaxAttempts;
@@ -99,7 +100,7 @@ export default function MyQuizzesScreen({ navigation }: Props) {
                   item.DifficultyLevel === 'hard' && styles.hardBg,
                 ]}
               >
-                {item.DifficultyLevel.charAt(0).toUpperCase()}
+                {item.DifficultyLevel.toUpperCase()}
               </Text>
             </View>
           </View>

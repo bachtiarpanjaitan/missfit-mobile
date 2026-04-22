@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { formatToRupiah } from '../../../lib/utils';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from "../../styles/globalStyles";
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Dashboard'>;
 
@@ -30,11 +31,13 @@ export default function DashboardScreen({ navigation }: Props) {
   const { latestPackages, paidPackages, freePackages, loading } = useAppSelector((state) => state.quiz);
   const { globalRankings } = useAppSelector((state) => state.ranking);
 
-  useEffect(() => {
-    dispatch(fetchQuizPackages());
-    dispatch(fetchGlobalRankings(10));
-    dispatch(fetchQuizResults());
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(fetchQuizPackages());
+      dispatch(fetchGlobalRankings(10));
+      dispatch(fetchQuizResults());
+    }, [dispatch])
+  );
 
   const topRankings = globalRankings;
 

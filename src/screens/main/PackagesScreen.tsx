@@ -20,6 +20,7 @@ import { MainTabParamList, RootStackParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import { formatToRupiah } from '../../../lib/utils';
 import { styles } from "../../styles/globalStyles";
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = CompositeScreenProps<
   BottomTabScreenProps<MainTabParamList, 'Packages'>,
@@ -32,9 +33,12 @@ export default function PackagesScreen({ navigation }: Props) {
   const [filter, setFilter] = useState<'all' | 'free' | 'paid'>('all');
   const [searchText, setSearchText] = useState('');
   const packages = allPackages;
-  useEffect(() => {
-    dispatch(fetchAllQuizPackages());
-  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(fetchAllQuizPackages());
+    }, [dispatch])
+  );
 
   const getFilteredPackages = () => {
     let filtered = packages;
