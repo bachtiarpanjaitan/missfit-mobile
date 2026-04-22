@@ -15,6 +15,7 @@ import {
   initiatePayment,
   verifyPayment,
   resetPayment,
+  clearError
 } from '../../redux/slices/paymentSlice';
 import { RootStackParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
@@ -43,15 +44,14 @@ export default function PaymentFlowScreen({ route, navigation }: Props) {
   const pkg = useAppSelector((state) =>
     state.quiz.allPackages.find((p) => p.Id === packageId)
   );
+  useEffect(() => {
+    dispatch(clearError());
+    dispatch(resetPayment());
+  }, [dispatch]);
+
 
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [step, setStep] = useState<'method' | 'processing' | 'success'>('method');
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetPayment());
-    };
-  }, []);
 
   const handlePayment = async () => {
     if (!selectedMethod) {
