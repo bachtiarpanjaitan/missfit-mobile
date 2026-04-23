@@ -43,7 +43,7 @@ export default function MainNavigator() {
         name="Dashboard"
         component={DashboardScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Beranda',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
@@ -53,7 +53,7 @@ export default function MainNavigator() {
         name="Packages"
         component={PackagesScreen}
         options={{
-          tabBarLabel: 'Packages',
+          tabBarLabel: 'Paket',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="book" size={size} color={color} />
           ),
@@ -63,7 +63,7 @@ export default function MainNavigator() {
         name="MyQuizzes"
         component={MyQuizzesScreen}
         options={{
-          tabBarLabel: 'My Quizzes',
+          tabBarLabel: 'Paket Saya',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="checkbox" size={size} color={color} />
           ),
@@ -73,7 +73,7 @@ export default function MainNavigator() {
         name="Rankings"
         component={RankingsScreen}
         options={{
-          tabBarLabel: 'Rankings',
+          tabBarLabel: 'Peringkat',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="trophy" size={size} color={color} />
           ),
@@ -83,7 +83,7 @@ export default function MainNavigator() {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: 'Profil',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),

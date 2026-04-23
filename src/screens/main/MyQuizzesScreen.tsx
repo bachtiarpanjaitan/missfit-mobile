@@ -170,7 +170,7 @@ export default function MyQuizzesScreen({ navigation }: Props) {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Kuis Saya</Text>
+          <Text style={styles.headerTitle}>Paket Saya</Text>
           <Text style={styles.headerSubtitle}>
             {myPackages.length} dibeli
           </Text>
