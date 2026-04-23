@@ -114,18 +114,18 @@ export default function MyQuizzesScreen({ navigation }: Props) {
             </View>
             <View style={styles.statBox}>
               <Text style={styles.statLabel}>Skor Terbaik</Text>
-              <Text style={styles.statValue}>{stats.bestScore}%</Text>
+              <Text style={styles.statValue}>{stats.bestScore}</Text>
             </View>
             <View style={styles.statBox}>
               <Text style={styles.statLabel}>Rata-rata</Text>
-              <Text style={styles.statValue}>{stats.avgScore}%</Text>
+              <Text style={styles.statValue}>{stats.avgScore}</Text>
             </View>
           </View>
 
           {item.MaxAttempts && (
             <View style={styles.attemptsBar}>
               <Text style={styles.attemptsText}>
-                Attempts: {item.TotalAttempts || 0}/{item.MaxAttempts}
+                Kesempatan : {item.TotalAttempts || 0}/{item.MaxAttempts}
               </Text>
               <View style={styles.progressBar}>
                 <View

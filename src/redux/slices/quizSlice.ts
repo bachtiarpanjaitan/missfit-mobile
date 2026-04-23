@@ -49,6 +49,7 @@ export interface QuizResult {
   timeSpent: number;
   answers: { questionId: string; answerId: string }[];
   completedAt: string;
+  startedAt: string;
 }
 
 export interface QuizState {
@@ -145,6 +146,9 @@ export const submitQuizResult = createAsyncThunk(
     totalQuestions: number;
     timeSpent: number;
     answers: { questionId: string; answerId: string }[];
+    startedAt: string;
+    completedAt: string;
+
   }) => {
     const response = await api.post('/quizzes/submit-result', data);
     return response.data.data;

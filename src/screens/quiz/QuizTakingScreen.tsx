@@ -25,7 +25,6 @@ import { RootStackParamList } from '../../navigation/types';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from "../../styles/globalStyles";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'QuizTaking'>;
 
