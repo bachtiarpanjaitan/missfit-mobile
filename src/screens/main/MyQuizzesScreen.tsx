@@ -36,8 +36,10 @@ export default function MyQuizzesScreen({ navigation }: Props) {
   );
 
   const handleStartQuiz = (packageId: string) => {
-    const pkg = myPackages.find((p) => p.Id === packageId);
+
+    const pkg = myPackages.find((p) => p?.QuizPackage?.Id === packageId);
     if (!pkg) return;
+
 
     // Check if max attempts exceeded
     if (pkg.TotalAttempts !== undefined && pkg.MaxAttempts) {

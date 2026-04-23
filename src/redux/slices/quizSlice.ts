@@ -9,10 +9,16 @@ export interface Answer {
 
 export interface Question {
   id: string;
-  text: string;
-  image?: string;
-  answers: Answer[];
-  correctAnswerId: string;
+  question_text: string;
+  question_image_url?: string;
+  Options: {
+    Id: string;
+    option_text: string;
+    option_image_url?: string;
+    options_order: number;
+    is_correct: boolean;
+  }[];
+  question_order: number;
   explanation: string;
 }
 
@@ -55,7 +61,7 @@ export interface QuizState {
     package: QuizPackage | null;
     questions: Question[];
     currentQuestionIndex: number;
-    answers: { [questionId: string]: string };
+    Options: { [questionId: string]: string };
     startTime: number | null;
   };
   results: QuizResult[];
@@ -72,7 +78,7 @@ const initialState: QuizState = {
     package: null,
     questions: [],
     currentQuestionIndex: 0,
-    answers: {},
+    Options: {},
     startTime: null,
   },
   results: [],
@@ -162,13 +168,13 @@ const quizSlice = createSlice({
         package: action.payload,
         questions: [],
         currentQuestionIndex: 0,
-        answers: {},
+        Options: {},
         startTime: Date.now(),
       };
     },
     answerQuestion: (state, action) => {
       const { questionId, answerId } = action.payload;
-      state.currentQuiz.answers[questionId] = answerId;
+      state.currentQuiz.Options[questionId] = answerId;
     },
     moveToNextQuestion: (state) => {
       state.currentQuiz.currentQuestionIndex += 1;
@@ -183,7 +189,7 @@ const quizSlice = createSlice({
         package: null,
         questions: [],
         currentQuestionIndex: 0,
-        answers: {},
+        Options: {},
         startTime: null,
       };
     },
@@ -221,7 +227,9 @@ const quizSlice = createSlice({
       })
       .addCase(fetchQuizQuestions.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentQuiz.questions = action.payload;
+        // console.log(action.payload)
+        state.currentQuiz.questions = action.payload.questions;
+        state.currentQuiz.package = action.payload.package;
       })
       .addCase(fetchQuizQuestions.rejected, (state, action) => {
         state.loading = false;
@@ -236,7 +244,7 @@ const quizSlice = createSlice({
           package: null,
           questions: [],
           currentQuestionIndex: 0,
-          answers: {},
+          Options: {},
           startTime: null,
         };
       });
