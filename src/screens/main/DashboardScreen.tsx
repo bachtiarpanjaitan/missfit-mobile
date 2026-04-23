@@ -111,7 +111,7 @@ export default function DashboardScreen({ navigation }: Props) {
         <Text style={styles.rankingName} numberOfLines={1}>
           {item.userName}
         </Text>
-        <Text style={styles.rankingPoints}>{item.points} points</Text>
+        <Text style={styles.rankingPoints}>{item.points} poin</Text>
       </View>
     </View>
   );
@@ -134,21 +134,21 @@ export default function DashboardScreen({ navigation }: Props) {
           {/* Welcome Section */}
           <View style={styles.welcomeSection}>
             <View>
-              <Text style={styles.welcomeText}>Welcome back!</Text>
+              <Text style={styles.welcomeText}>Selamat Datang Kembali!</Text>
               <Text style={styles.userName}>{user?.name}</Text>
             </View>
             <View style={styles.userStats}>
               <View style={styles.statItem}>
                 <Ionicons name="star" size={20} color="#fbbf24" />
                 <Text style={styles.statValue}>{user?.points || 0}</Text>
-                <Text style={styles.statLabel}>Points</Text>
+                <Text style={styles.statLabel}>Poin</Text>
               </View>
               <View style={styles.statItem}>
                 <Ionicons name="checkbox" size={20} color="#6366f1" />
                 <Text style={styles.statValue}>
                   {user?.totalQuizzesTaken || 0}
                 </Text>
-                <Text style={styles.statLabel}>Completed</Text>
+                <Text style={styles.statLabel}>Selesai</Text>
               </View>
             </View>
           </View>
@@ -156,13 +156,13 @@ export default function DashboardScreen({ navigation }: Props) {
           {/* Latest Packages */}
           <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Latest Quizzes</Text>
+              <Text style={styles.sectionTitle}>Kuis Terbaru</Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('Packages' as never)
                 }
               >
-                <Text style={styles.viewAll}>View All</Text>
+                <Text style={styles.viewAll}>Semua</Text>
               </TouchableOpacity>
             </View>
             <FlatList
@@ -176,13 +176,13 @@ export default function DashboardScreen({ navigation }: Props) {
           {/* Free Packages */}
           <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Free Quizzes</Text>
+              <Text style={styles.sectionTitle}>Kuis Gratis</Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('Packages' as never)
                 }
               >
-                <Text style={styles.viewAll}>View All</Text>
+                <Text style={styles.viewAll}>Semua</Text>
               </TouchableOpacity>
             </View>
             <FlatList
@@ -202,7 +202,7 @@ export default function DashboardScreen({ navigation }: Props) {
                   navigation.navigate('Rankings' as never)
                 }
               >
-                <Text style={styles.viewAll}>View More</Text>
+                <Text style={styles.viewAll}>Selengkapnya</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.rankingsList}>

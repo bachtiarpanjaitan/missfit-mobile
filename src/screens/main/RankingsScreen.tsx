@@ -134,7 +134,7 @@ export default function RankingsScreen({ navigation }: Props) {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Rankings</Text>
+          <Text style={styles.headerTitle}>Peringkat</Text>
         </View>
 
         {/* User's Current Rank */}
@@ -188,7 +188,7 @@ export default function RankingsScreen({ navigation }: Props) {
                 activeTab === 'package' && styles.activeTabText,
               ]}
             >
-              By Package
+              Per Paket
             </Text>
           </TouchableOpacity>
         </View>
@@ -240,7 +240,7 @@ export default function RankingsScreen({ navigation }: Props) {
         ) : (
           <View style={styles.emptyContainer}>
             <Ionicons name="trophy-outline" size={48} color="#d1d5db" />
-            <Text style={styles.emptyText}>No rankings available</Text>
+            <Text style={styles.emptyText}>Belum ada Peringkat tersedia</Text>
           </View>
         )}
       </SafeAreaView>

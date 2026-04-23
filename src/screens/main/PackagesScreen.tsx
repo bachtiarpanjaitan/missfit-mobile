@@ -120,7 +120,7 @@ export default function PackagesScreen({ navigation }: Props) {
           </View>
           {item.IsPurchased && (
             <View style={styles.purchasedBadge}>
-              <Text style={styles.purchasedText}>Purchased</Text>
+              <Text style={styles.purchasedText}>Dibeli</Text>
             </View>
           )}
         </View>
@@ -147,7 +147,7 @@ export default function PackagesScreen({ navigation }: Props) {
           }}
         >
           <Text style={styles.actionButtonText}>
-            {item.IsPurchased && !item.IsFree ? 'Start Quiz' : item.IsFree && !item.IsPurchased ? 'Get For Free' : 'Buy Now'}
+            {item.IsPurchased && !item.IsFree ? 'Mulai Kuis' : item.IsFree && !item.IsPurchased ? 'Dapatkan Gratis' : 'Beli Sekarang'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -158,14 +158,14 @@ export default function PackagesScreen({ navigation }: Props) {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Quiz Packages</Text>
+          <Text style={styles.headerTitle}>Paket Kuis</Text>
         </View>
 
         <View style={styles.searchContainer}>
           <Ionicons name="search" size={20} color="#9ca3af" />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search quizzes..."
+            placeholder="Cari Kuis"
             placeholderTextColor="#d1d5db"
             value={searchText}
             onChangeText={setSearchText}
@@ -209,7 +209,7 @@ export default function PackagesScreen({ navigation }: Props) {
         ) : (
           <View style={styles.emptyContainer}>
             <Ionicons name="search" size={48} color="#d1d5db" />
-            <Text style={styles.emptyText}>No quizzes found</Text>
+            <Text style={styles.emptyText}>Tidak ada kuis ditemukan</Text>
           </View>
         )}
       </SafeAreaView>

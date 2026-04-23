@@ -45,7 +45,7 @@ export default function ProfileScreen({ navigation }: Props) {
     );
 
     if (updateProfile.fulfilled.match(result)) {
-      Alert.alert('Success', 'Profile updated successfully');
+      Alert.alert('Berhasil', 'Profil berhasil diupdate');
       setIsEditing(false);
     }
   };
@@ -55,7 +55,7 @@ export default function ProfileScreen({ navigation }: Props) {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert('Permission', 'Permission to access media library is required');
+      Alert.alert('Izin', 'Izin untuk mengakses galeri diperlukan');
       return;
     }
 
@@ -72,8 +72,8 @@ export default function ProfileScreen({ navigation }: Props) {
   };
 
   const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout?', [
-      { text: 'Cancel', onPress: () => { } },
+    Alert.alert('Logout', 'Apakah kamu yakin ingin logout?', [
+      { text: 'Batal', onPress: () => { } },
       {
         text: 'Logout',
         onPress: () => {
@@ -85,14 +85,14 @@ export default function ProfileScreen({ navigation }: Props) {
   };
 
   const handleChangePassword = () => {
-    Alert.alert('Coming Soon', 'Password change will be available soon');
+    Alert.alert('Segera Hadir', 'Fitur ganti password akan segera tersedia');
   };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Profile</Text>
+          <Text style={styles.headerTitle}>Profil Pengguna</Text>
         </View>
 
         <ScrollView
@@ -130,7 +130,7 @@ export default function ProfileScreen({ navigation }: Props) {
                 value={editedName}
                 onChangeText={setEditedName}
                 editable={isEditing}
-                placeholder="Enter your name"
+                placeholder="Masukkan nama kamu"
               />
             </View>
 
@@ -142,7 +142,7 @@ export default function ProfileScreen({ navigation }: Props) {
                 onChangeText={setEditedEmail}
                 editable={isEditing}
                 keyboardType="email-address"
-                placeholder="Enter your email"
+                placeholder="Masukkan email kamu"
               />
             </View>
           </View>
@@ -154,7 +154,7 @@ export default function ProfileScreen({ navigation }: Props) {
                 <Ionicons name="star" size={24} color="#fbbf24" />
               </View>
               <View style={styles.statCardContent}>
-                <Text style={styles.statCardLabel}>Total Points</Text>
+                <Text style={styles.statCardLabel}>Total Poin</Text>
                 <Text style={styles.statCardValue}>{user?.points || 0}</Text>
               </View>
             </View>
@@ -164,7 +164,7 @@ export default function ProfileScreen({ navigation }: Props) {
                 <Ionicons name="checkbox" size={24} color="#6366f1" />
               </View>
               <View style={styles.statCardContent}>
-                <Text style={styles.statCardLabel}>Quizzes Completed</Text>
+                <Text style={styles.statCardLabel}>Kuis Selesai</Text>
                 <Text style={styles.statCardValue}>
                   {user?.totalQuizzesTaken || 0}
                 </Text>
@@ -194,7 +194,7 @@ export default function ProfileScreen({ navigation }: Props) {
                   color="#ffffff"
                 />
                 <Text style={styles.mainButtonText}>
-                  {isEditing ? 'Save Changes' : 'Edit Profile'}
+                  {isEditing ? 'Simpan Perubahan' : 'Ubah Profil'}
                 </Text>
               </>
             )}
@@ -210,13 +210,13 @@ export default function ProfileScreen({ navigation }: Props) {
                 setEditedAvatar(user?.avatar);
               }}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>Batal</Text>
             </TouchableOpacity>
           )}
 
           {/* Account Section */}
           <View style={styles.accountSection}>
-            <Text style={styles.sectionTitle}>Account Settings</Text>
+            <Text style={styles.sectionTitle}>Pengaturan Akun</Text>
 
             <TouchableOpacity
               style={styles.settingItem}
@@ -224,7 +224,7 @@ export default function ProfileScreen({ navigation }: Props) {
             >
               <View style={styles.settingItemLeft}>
                 <Ionicons name="lock-closed" size={20} color="#6366f1" />
-                <Text style={styles.settingItemText}>Change Password</Text>
+                <Text style={styles.settingItemText}>Ganti Password</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#d1d5db" />
             </TouchableOpacity>
@@ -235,7 +235,7 @@ export default function ProfileScreen({ navigation }: Props) {
             >
               <View style={styles.settingItemLeft}>
                 <Ionicons name="information-circle" size={20} color="#6366f1" />
-                <Text style={styles.settingItemText}>About App</Text>
+                <Text style={styles.settingItemText}>Tentang Aplikasi</Text>
               </View>
               <Text style={styles.settingItemValue}>v1.0.0</Text>
             </TouchableOpacity>
@@ -246,7 +246,7 @@ export default function ProfileScreen({ navigation }: Props) {
             >
               <View style={styles.settingItemLeft}>
                 <Ionicons name="document-text" size={20} color="#6366f1" />
-                <Text style={styles.settingItemText}>Privacy Policy</Text>
+                <Text style={styles.settingItemText}>Kebijakan Privasi</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#d1d5db" />
             </TouchableOpacity>
@@ -258,7 +258,7 @@ export default function ProfileScreen({ navigation }: Props) {
             onPress={handleLogout}
           >
             <Ionicons name="log-out" size={20} color="#ef4444" />
-            <Text style={styles.logoutButtonText}>Logout</Text>
+            <Text style={styles.logoutButtonText}>Keluar</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>

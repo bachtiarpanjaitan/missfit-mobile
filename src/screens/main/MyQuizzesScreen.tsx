@@ -45,8 +45,8 @@ export default function MyQuizzesScreen({ navigation }: Props) {
     if (pkg.TotalAttempts !== undefined && pkg.MaxAttempts) {
       if (pkg.TotalAttempts >= pkg.MaxAttempts) {
         Alert.alert(
-          'Maximum Attempts Exceeded',
-          `You have reached the maximum of ${pkg.MaxAttempts} attempts for this quiz`
+          'Maksimum Kesempatan Tercapai',
+          `Anda telah mencapai maksimum ${pkg.MaxAttempts} kesempatan untuk kuis ini`
         );
         return;
       }
@@ -109,15 +109,15 @@ export default function MyQuizzesScreen({ navigation }: Props) {
 
           <View style={styles.statsRow}>
             <View style={styles.statBox}>
-              <Text style={styles.statLabel}>Completed</Text>
+              <Text style={styles.statLabel}>Selesai</Text>
               <Text style={styles.statValue}>{stats.completed}</Text>
             </View>
             <View style={styles.statBox}>
-              <Text style={styles.statLabel}>Best Score</Text>
+              <Text style={styles.statLabel}>Skor Terbaik</Text>
               <Text style={styles.statValue}>{stats.bestScore}%</Text>
             </View>
             <View style={styles.statBox}>
-              <Text style={styles.statLabel}>Avg Score</Text>
+              <Text style={styles.statLabel}>Rata-rata</Text>
               <Text style={styles.statValue}>{stats.avgScore}%</Text>
             </View>
           </View>
@@ -150,7 +150,7 @@ export default function MyQuizzesScreen({ navigation }: Props) {
             disabled={!canAttempt}
           >
             <Text style={styles.startButtonText}>
-              {canAttempt ? 'Start Quiz' : 'Max Attempts Reached'}
+              {canAttempt ? 'Mulai Kuis' : 'Maksimum Kesempatan Tercapai'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -170,9 +170,9 @@ export default function MyQuizzesScreen({ navigation }: Props) {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>My Quizzes</Text>
+          <Text style={styles.headerTitle}>Kuis Saya</Text>
           <Text style={styles.headerSubtitle}>
-            {myPackages.length} purchased
+            {myPackages.length} dibeli
           </Text>
         </View>
 
@@ -187,9 +187,9 @@ export default function MyQuizzesScreen({ navigation }: Props) {
         ) : (
           <View style={styles.emptyContainer}>
             <Ionicons name="checkbox-outline" size={48} color="#d1d5db" />
-            <Text style={styles.emptyText}>No quizzes purchased yet</Text>
+            <Text style={styles.emptyText}>Belum ada kuis yang dibeli</Text>
             <Text style={styles.emptySubtext}>
-              Explore packages and start learning
+              Jelajahi paket dan mulai belajar
             </Text>
           </View>
         )}

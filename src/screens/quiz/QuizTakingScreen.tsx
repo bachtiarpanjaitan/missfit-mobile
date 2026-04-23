@@ -78,10 +78,10 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
   };
 
   const submitQuiz = async () => {
-    Alert.alert('Submit Quiz', 'Are you sure you want to submit?', [
-      { text: 'Cancel' },
+    Alert.alert('Selesaikan Kuis', 'Apakah kamu yakin ingin menyelesaikan kuis ini?', [
+      { text: 'Batal' },
       {
-        text: 'Submit',
+        text: 'Ya',
         onPress: () => {
           // Calculate score
           let correctAnswers = 0;
@@ -196,7 +196,7 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
 
           {/* Answers Section */}
           <View style={styles.answersSection}>
-            <Text style={styles.answersTitle}>Select your answer:</Text>
+            <Text style={styles.answersTitle}>Pilih jawaban:</Text>
             {currentQuestion.Options.map((option) => {
               const isSelected = selectedAnswer === option.Id;
               const isCorrect = option.is_correct;
@@ -254,7 +254,7 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
             <View style={styles.explanationSection}>
               <View style={styles.explanationHeader}>
                 <Ionicons name="information-circle" size={20} color="#0284c7" />
-                <Text style={styles.explanationTitle}>Explanation</Text>
+                <Text style={styles.explanationTitle}>Penjelasan</Text>
               </View>
               <Text style={styles.explanationText}>
                 {currentQuestion.explanation}
@@ -269,7 +269,7 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
                 style={styles.skipButton}
                 onPress={handleSkipQuestion}
               >
-                <Text style={styles.skipButtonText}>Skip Question</Text>
+                <Text style={styles.skipButtonText}>Lewati</Text>
               </TouchableOpacity>
             )}
 
@@ -279,7 +279,7 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
                 onPress={() => setShowExplanation(true)}
               >
                 <Text style={styles.submitAnswerButtonText}>
-                  Show Explanation
+                  Tampilkan Penjelasan
                 </Text>
               </TouchableOpacity>
             )}
@@ -291,8 +291,8 @@ export default function QuizTakingScreen({ route, navigation }: Props) {
               >
                 <Text style={styles.submitAnswerButtonText}>
                   {quiz.currentQuestionIndex === quiz.questions.length - 1
-                    ? 'Submit Quiz'
-                    : 'Next Question'}
+                    ? 'Selesai'
+                    : 'Lanjut'}
                 </Text>
               </TouchableOpacity>
             )}

@@ -61,7 +61,7 @@ export default function FreePaymentFlowScreen({ route, navigation }: Props) {
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Ionicons name="close" size={24} color="#1f2937" />
                     </TouchableOpacity>
-                    <Text style={styles.headerTitle}>Payment</Text>
+                    <Text style={styles.headerTitle}>Pembayaran</Text>
                     <View style={{ width: 24 }} />
                 </View>
 
@@ -72,7 +72,7 @@ export default function FreePaymentFlowScreen({ route, navigation }: Props) {
                     {/* Order Summary */}
                     <View style={styles.summaryCard}>
                         <View style={styles.summaryHeader}>
-                            <Text style={styles.summaryTitle}>Package Details</Text>
+                            <Text style={styles.summaryTitle}>Rincian Paket</Text>
                         </View>
 
                         {pkg?.ThumbnailUrl && (
@@ -90,23 +90,23 @@ export default function FreePaymentFlowScreen({ route, navigation }: Props) {
                                 <Text style={styles.detailLabel}>{pkg?.Description}</Text>
                             </View>
                             <View style={styles.summaryRow}>
-                                <Text style={styles.detailLabel}>Category:</Text>
+                                <Text style={styles.detailLabel}>Kategori:</Text>
                                 <Text style={styles.detailValue}>{pkg?.Category}</Text>
                             </View>
                             <View style={styles.summaryRow}>
-                                <Text style={styles.detailLabel}>Questions:</Text>
+                                <Text style={styles.detailLabel}>Jumlah Soal:</Text>
                                 <Text style={styles.detailValue}>{pkg?.TotalQuestions}</Text>
                             </View>
                             <View style={styles.summaryRow}>
-                                <Text style={styles.detailLabel}>Difficulty:</Text>
+                                <Text style={styles.detailLabel}>Kesulitan:</Text>
                                 <Text style={styles.detailLabel}>{pkg?.DifficultyLevel.toUpperCase()}</Text>
                             </View>
                             <View style={styles.summaryRow}>
-                                <Text style={styles.detailLabel}>Duration:</Text>
-                                <Text style={styles.detailValue}>{pkg?.DurationMinutes} minutes</Text>
+                                <Text style={styles.detailLabel}>Durasi:</Text>
+                                <Text style={styles.detailValue}>{pkg?.DurationMinutes} menit</Text>
                             </View>
                             <View style={styles.summaryRow}>
-                                <Text style={styles.detailLabel}>Max Attempts:</Text>
+                                <Text style={styles.detailLabel}>Maks Kesempatan:</Text>
                                 <Text style={styles.detailValue}>{pkg?.MaxAttempts}</Text>
                             </View>
                         </View>
@@ -135,7 +135,7 @@ export default function FreePaymentFlowScreen({ route, navigation }: Props) {
                             <>
                                 <Ionicons name="card" size={20} color="#ffffff" />
                                 <Text style={styles.paymentButtonText}>
-                                    Get Free Package
+                                    Dapatkan Paket Gratis
                                 </Text>
                             </>
                         )}
