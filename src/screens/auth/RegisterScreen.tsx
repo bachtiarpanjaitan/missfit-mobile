@@ -22,23 +22,23 @@ export default function RegisterScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.auth);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('newuser@example.com');
-  const [password, setPassword] = useState('password123');
-  const [confirmPassword, setConfirmPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegister = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill all fields');
+      Alert.alert('Error', 'Harap lengkapi semua field');
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert('Error', 'Password tidak cocok');
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+      Alert.alert('Error', 'Password harus minimal 6 karakter');
       return;
     }
 
@@ -47,9 +47,9 @@ export default function RegisterScreen({ navigation }: Props) {
     );
 
     if (registerUser.fulfilled.match(result)) {
-      Alert.alert('Success', 'Account created successfully');
+      Alert.alert('Berhasil', 'Akun berhasil dibuat');
     } else {
-      Alert.alert('Registration Failed', error || 'Please try again');
+      Alert.alert('Registrasi Gagal', error || 'Coba lagi');
     }
   };
 
@@ -64,16 +64,16 @@ export default function RegisterScreen({ navigation }: Props) {
     >
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join Miss Fit Community</Text>
+          <Text style={styles.title}>Buat Akun</Text>
+          <Text style={styles.subtitle}>Bergabung dengan Komunitas Miss Fit</Text>
         </View>
 
         <View style={styles.form}>
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Name</Text>
+            <Text style={styles.label}>Nama</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your full name"
+              placeholder="Masukkan nama anda"
               placeholderTextColor="#9ca3af"
               autoCapitalize="words"
               value={name}
@@ -86,7 +86,7 @@ export default function RegisterScreen({ navigation }: Props) {
             <Text style={styles.label}>Email</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your email"
+              placeholder="Masukkan email anda"
               placeholderTextColor="#9ca3af"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -100,7 +100,7 @@ export default function RegisterScreen({ navigation }: Props) {
             <Text style={styles.label}>Password</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your password"
+              placeholder="Masukkan password anda"
               placeholderTextColor="#9ca3af"
               secureTextEntry
               value={password}
@@ -110,10 +110,10 @@ export default function RegisterScreen({ navigation }: Props) {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Confirm Password</Text>
+            <Text style={styles.label}>Konfirmasi Password</Text>
             <TextInput
               style={styles.input}
-              placeholder="Confirm your password"
+              placeholder="Konfirmasi password anda"
               placeholderTextColor="#9ca3af"
               secureTextEntry
               value={confirmPassword}
@@ -132,17 +132,17 @@ export default function RegisterScreen({ navigation }: Props) {
             {loading ? (
               <ActivityIndicator color="#ffffff" />
             ) : (
-              <Text style={styles.registerButtonText}>Create Account</Text>
+              <Text style={styles.registerButtonText}>Buat Akun</Text>
             )}
           </TouchableOpacity>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>Already have an account? </Text>
+            <Text style={styles.footerText}>Sudah punya akun? </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Login')}
               disabled={loading}
             >
-              <Text style={styles.loginLink}>Login here</Text>
+              <Text style={styles.loginLink}>Masuk</Text>
             </TouchableOpacity>
           </View>
         </View>

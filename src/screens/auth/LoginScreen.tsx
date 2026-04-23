@@ -42,7 +42,7 @@ export default function LoginScreen({ navigation }: Props) {
   };
 
   const handleGoogleLogin = async () => {
-    Alert.alert('Coming Soon', 'Google Login will be available soon');
+    Alert.alert('Coming Soon', 'Login Google akan segera tersedia');
   };
 
   React.useEffect(() => {
@@ -56,8 +56,8 @@ export default function LoginScreen({ navigation }: Props) {
     >
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>Miss Fit</Text>
-          <Text style={styles.subtitle}>Quiz Application</Text>
+          <Text style={styles.title}>MissFit</Text>
+          <Text style={styles.subtitle}>Platform Edukasi Kuis Online</Text>
         </View>
 
         <View style={styles.form}>
@@ -65,7 +65,7 @@ export default function LoginScreen({ navigation }: Props) {
             <Text style={styles.label}>Email</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your email"
+              placeholder="Masukkan email anda"
               placeholderTextColor="#9ca3af"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -79,7 +79,7 @@ export default function LoginScreen({ navigation }: Props) {
             <Text style={styles.label}>Password</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your password"
+              placeholder="Masukkan password anda"
               placeholderTextColor="#9ca3af"
               secureTextEntry
               value={password}
@@ -104,7 +104,7 @@ export default function LoginScreen({ navigation }: Props) {
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>or</Text>
+            <Text style={styles.dividerText}>atau</Text>
             <View style={styles.dividerLine} />
           </View>
 
@@ -113,16 +113,16 @@ export default function LoginScreen({ navigation }: Props) {
             onPress={handleGoogleLogin}
             disabled={loading}
           >
-            <Text style={styles.googleButtonText}>Login with Google</Text>
+            <Text style={styles.googleButtonText}>Masuk dengan Google</Text>
           </TouchableOpacity>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account? </Text>
+            <Text style={styles.footerText}>Belum punya akun? </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Register')}
               disabled={loading}
             >
-              <Text style={styles.registerLink}>Register here</Text>
+              <Text style={styles.registerLink}>Daftar</Text>
             </TouchableOpacity>
           </View>
         </View>
